@@ -137,7 +137,7 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
     {
         font = game.assets.get("default.otf")
         mgr.setAssets()
-        isAssetsUnset = true
+        isAssetsUnset = false
 
         music = game.assets.get("bgm.mp3")
         music.isLooping = true
