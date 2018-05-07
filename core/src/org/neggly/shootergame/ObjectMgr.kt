@@ -33,7 +33,7 @@ class ObjectMgr(private val assets: AssetManager) : Group()
         assets.load("item_2.png", Texture::class.java)
     }
 
-    fun setAsset()
+    fun setAssets()
     {
         player = Player(this, assets.get("player.png"))
         boss = Boss(this, assets.get("boss.png"))

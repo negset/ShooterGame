@@ -2,13 +2,10 @@ package org.neggly.shootergame
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.audio.Music
-import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.Texture
-import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
@@ -19,8 +16,8 @@ import com.badlogic.gdx.utils.viewport.FitViewport
 
 class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
 {
-    private val stage: Stage = Stage(FitViewport(WIDTH, HEIGHT))
-    private val batch: SpriteBatch = SpriteBatch()
+    private val stage = Stage(FitViewport(WIDTH, HEIGHT))
+    private val batch = SpriteBatch()
 
     private var font: BitmapFont? = null
 
@@ -29,7 +26,7 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
 
     private lateinit var mgr: ObjectMgr
 
-    private var assetHasSet = false
+    private var isAssetsUnset = true
 
     private var level = 1
 
@@ -67,7 +64,7 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
 
     override fun render(delta: Float)
     {
-        if (!assetHasSet) setAsset()
+        if (isAssetsUnset) setAssets()
         draw()
         update(delta)
     }
@@ -136,11 +133,11 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
         game.assets.unload("bgm.mp3")
     }
 
-    private fun setAsset()
+    private fun setAssets()
     {
         font = game.assets.get("default.otf")
-        mgr.setAsset()
-        assetHasSet = true
+        mgr.setAssets()
+        isAssetsUnset = true
 
         music = game.assets.get("bgm.mp3")
         music.isLooping = true
