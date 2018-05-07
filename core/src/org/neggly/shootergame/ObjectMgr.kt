@@ -103,13 +103,13 @@ class ObjectMgr(private val assets: AssetManager) : Group()
     private fun collisionDetectionPlayerAndBoss()
     {
         if (player.isInvincible) return
+        if (!boss.hasParent()) return
         val playerCircle = Circle(player.x, player.y, 30f)
         val bossCircle = Circle(boss.x, boss.y, 80f)
         if (playerCircle.overlaps(bossCircle))
         {
             addLife(-1)
             player.isInvincible = true
-            Gdx.app.log("player & boss", "detect")
         }
     }
 
@@ -123,7 +123,6 @@ class ObjectMgr(private val assets: AssetManager) : Group()
             {
                 addLife(-1)
                 player.isInvincible = true
-                Gdx.app.log("player & shot", "detect")
                 shot.deactivate()
             }
         }
@@ -140,7 +139,6 @@ class ObjectMgr(private val assets: AssetManager) : Group()
             {
                 addLife(-1)
                 player.isInvincible = true
-                Gdx.app.log("player & enemy", "detect")
             }
         }
     }
