@@ -19,7 +19,7 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
     private val stage = Stage(FitViewport(WIDTH, HEIGHT))
     private val batch = SpriteBatch()
 
-    private var font: BitmapFont? = null
+    private lateinit var font: BitmapFont
 
     private var counter = 0
     private var enemyCount = 0
@@ -75,10 +75,10 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
         batch.begin()
-        font?.draw(batch, "Score: ${mgr.score}", 30f, 100f, WIDTH - 60, Align.left, true)
-        font?.draw(batch, "Life: ${mgr.life}", 30f, 100f, WIDTH - 60, Align.right, true)
+        font.draw(batch, "Score: ${mgr.score}", 30f, 100f, WIDTH - 60, Align.left, true)
+        font.draw(batch, "Life: ${mgr.life}", 30f, 100f, WIDTH - 60, Align.right, true)
         if (mgr.isGameOver)
-            font?.draw(batch, "Game Over", 0f, 1280f, WIDTH, Align.center, true)
+            font.draw(batch, "Game Over", 0f, 1280f, WIDTH, Align.center, true)
         batch.end()
 
         stage.draw()
