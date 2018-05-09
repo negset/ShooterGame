@@ -13,10 +13,10 @@ class ObjectMgr(private val assets: AssetManager) : Group()
 {
     lateinit var player: Player
     lateinit var boss: Boss
-    lateinit private var enemies: Array<Enemy>
-    lateinit private var bullets: Array<Bullet>
-    lateinit private var shots: Array<Shot>
-    lateinit private var items: Array<Item>
+    private lateinit var enemies: Array<Enemy>
+    private lateinit var bullets: Array<Bullet>
+    private lateinit var shots: Array<Shot>
+    private lateinit var items: Array<Item>
 
     var score = 0
     var life = 3
