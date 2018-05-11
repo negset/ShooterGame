@@ -5,3 +5,5 @@
 framework: libGDX  
 language: Kotlin  
 platform: Android/Windows/macOS/Linux
+
+You can download this game from [here](https://github.com/negset/ShooterGame/releases).
