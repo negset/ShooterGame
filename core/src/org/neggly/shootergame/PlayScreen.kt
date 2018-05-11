@@ -24,8 +24,6 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
     private var counter = 0
     private var enemyCount = 0
 
-    //private lateinit var mgr: ObjectMgr
-
     private var isAssetsUnset = true
 
     private var level = 1
@@ -41,8 +39,6 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
 
     override fun show()
     {
-        //mgr = ObjectMgr(game.assets)
-        //stage.addActor(mgr)
         ObjectMgr.setAssetManager(game.assets)
         stage.addActor(ObjectMgr)
 
