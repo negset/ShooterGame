@@ -2,7 +2,7 @@ package org.neggly.shootergame
 
 import com.badlogic.gdx.graphics.Texture
 
-class Bullet(private val mgr: ObjectMgr, texture: Texture) : GameObject(texture)
+class Bullet(texture: Texture) : GameObject(texture)
 {
     override fun act(delta: Float)
     {

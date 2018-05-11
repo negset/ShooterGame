@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 
-class Shot(private val mgr: ObjectMgr, texture: Texture) : GameObject(texture)
+class Shot(texture: Texture) : GameObject(texture)
 {
     fun activate(x: Float, y: Float, deg: Float)
     {

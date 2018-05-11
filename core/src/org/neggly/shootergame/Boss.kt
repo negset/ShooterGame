@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 
-class Boss(private val mgr: ObjectMgr, texture: Texture) : GameObject(texture)
+class Boss(texture: Texture) : GameObject(texture)
 {
     private var counter = 0
 
@@ -60,10 +60,10 @@ class Boss(private val mgr: ObjectMgr, texture: Texture) : GameObject(texture)
 
         if (hp <= 0)
         {
-            mgr.score += 1000
-            mgr.newItem(x, y)
-            mgr.newItem(x-36, y-54)
-            mgr.newItem(x+36, y-54)
+            ObjectMgr.score += 1000
+            ObjectMgr.newItem(x, y)
+            ObjectMgr.newItem(x-36, y-54)
+            ObjectMgr.newItem(x+36, y-54)
             deactivate()
         }
 
@@ -101,12 +101,12 @@ class Boss(private val mgr: ObjectMgr, texture: Texture) : GameObject(texture)
         {
             counter % 3 == 0 ->
             {
-                mgr.newShot(x, y, shootAngle)
-                mgr.newShot(x, y, shootAngle - 60)
-                mgr.newShot(x, y, shootAngle - 120)
-                mgr.newShot(x, y, shootAngle + 60)
-                mgr.newShot(x, y, shootAngle + 120)
-                mgr.newShot(x, y, shootAngle + 180)
+                ObjectMgr.newShot(x, y, shootAngle)
+                ObjectMgr.newShot(x, y, shootAngle - 60)
+                ObjectMgr.newShot(x, y, shootAngle - 120)
+                ObjectMgr.newShot(x, y, shootAngle + 60)
+                ObjectMgr.newShot(x, y, shootAngle + 120)
+                ObjectMgr.newShot(x, y, shootAngle + 180)
                 shootAngle += 34
             }
         }

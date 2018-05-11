@@ -9,8 +9,10 @@ import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Group
 
-class ObjectMgr(private val assets: AssetManager) : Group()
+object ObjectMgr : Group()
 {
+    private lateinit var assets: AssetManager
+
     lateinit var player: Player
     lateinit var boss: Boss
     private lateinit var enemies: Array<Enemy>
@@ -23,8 +25,9 @@ class ObjectMgr(private val assets: AssetManager) : Group()
     var isGameOver = false
     var bossTime = false
 
-    init
+    fun setAssetManager(assetManager: AssetManager)
     {
+        assets = assetManager
         assets.load("player.png", Texture::class.java)
         assets.load("boss.png", Texture::class.java)
         assets.load("enemy.png", Texture::class.java)
@@ -35,12 +38,12 @@ class ObjectMgr(private val assets: AssetManager) : Group()
 
     fun setAssets()
     {
-        player = Player(this, assets.get("player.png"))
-        boss = Boss(this, assets.get("boss.png"))
-        enemies = Array(20, { Enemy(this, assets.get("enemy.png")) })
-        bullets = Array(50, { Bullet(this, assets.get("bullet.png")) })
-        shots = Array(500, { Shot(this, assets.get("shot.png")) })
-        items = Array(20, { Item(this, assets.get("item_2.png")) })
+        player = Player(assets.get("player.png"))
+        boss = Boss(assets.get("boss.png"))
+        enemies = Array(20, { Enemy(assets.get("enemy.png")) })
+        bullets = Array(50, { Bullet(assets.get("bullet.png")) })
+        shots = Array(500, { Shot(assets.get("shot.png")) })
+        items = Array(20, { Item(assets.get("item_2.png")) })
 
         addActor(player)
     }
@@ -235,6 +238,8 @@ class ObjectMgr(private val assets: AssetManager) : Group()
 
     fun dispose()
     {
+        clearChildren()
+        remove()
         assets.unload("player.png")
         assets.unload("boss.png")
         assets.unload("enemy.png")

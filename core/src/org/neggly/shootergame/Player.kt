@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.math.Vector2
 
-class Player(private val mgr: ObjectMgr, texture: Texture) : GameObject(texture)
+class Player(texture: Texture) : GameObject(texture)
 {
     private var baseX = 0f
     private var baseY = 0f

@@ -24,7 +24,7 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
     private var counter = 0
     private var enemyCount = 0
 
-    private lateinit var mgr: ObjectMgr
+    //private lateinit var mgr: ObjectMgr
 
     private var isAssetsUnset = true
 
@@ -41,8 +41,10 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
 
     override fun show()
     {
-        mgr = ObjectMgr(game.assets)
-        stage.addActor(mgr)
+        //mgr = ObjectMgr(game.assets)
+        //stage.addActor(mgr)
+        ObjectMgr.setAssetManager(game.assets)
+        stage.addActor(ObjectMgr)
 
         game.assets.load("bgm.mp3", Music::class.java)
 
@@ -75,9 +77,9 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
         batch.begin()
-        font.draw(batch, "Score: ${mgr.score}", 30f, 100f, WIDTH - 60, Align.left, true)
-        font.draw(batch, "Life: ${mgr.life}", 30f, 100f, WIDTH - 60, Align.right, true)
-        if (mgr.isGameOver)
+        font.draw(batch, "Score: ${ObjectMgr.score}", 30f, 100f, WIDTH - 60, Align.left, true)
+        font.draw(batch, "Life: ${ObjectMgr.life}", 30f, 100f, WIDTH - 60, Align.right, true)
+        if (ObjectMgr.isGameOver)
             font.draw(batch, "Game Over", 0f, 1280f, WIDTH, Align.center, true)
         batch.end()
 
@@ -88,25 +90,25 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
     {
         stage.act(delta)
 
-        if (!mgr.isGameOver && Gdx.input.isTouched && counter % 5 == 0)
+        if (!ObjectMgr.isGameOver && Gdx.input.isTouched && counter % 5 == 0)
         {
-            mgr.newBullet(mgr.player.x, mgr.player.y)
-            mgr.newBullet(mgr.player.x - 20, mgr.player.y - 10)
-            mgr.newBullet(mgr.player.x + 20, mgr.player.y - 10)
+            ObjectMgr.newBullet(ObjectMgr.player.x, ObjectMgr.player.y)
+            ObjectMgr.newBullet(ObjectMgr.player.x - 20, ObjectMgr.player.y - 10)
+            ObjectMgr.newBullet(ObjectMgr.player.x + 20, ObjectMgr.player.y - 10)
             sound.play()
         }
 
-        if (!mgr.bossTime)
+        if (!ObjectMgr.bossTime)
         {
             if (enemyCount > level * 10)
             {
-                mgr.bossTime = true
+                ObjectMgr.bossTime = true
                 level++
                 println("level: $level")
             }
             else if (counter % maxOf(150 - level * 10, 50) == 0)
             {
-                mgr.newEnemy(MathUtils.random(100, (WIDTH - 100).toInt()).toFloat(), HEIGHT + 200)
+                ObjectMgr.newEnemy(MathUtils.random(100, (WIDTH - 100).toInt()).toFloat(), HEIGHT + 200)
                 enemyCount++
             }
         }
@@ -128,7 +130,7 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
     {
         stage.dispose()
         batch.dispose()
-        mgr.dispose()
+        ObjectMgr.dispose()
         sound.dispose()
         game.assets.unload("bgm.mp3")
     }
@@ -136,7 +138,7 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
     private fun setAssets()
     {
         font = game.assets.get("default.otf")
-        mgr.setAssets()
+        ObjectMgr.setAssets()
         isAssetsUnset = false
 
         music = game.assets.get("bgm.mp3")

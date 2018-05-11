@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction
 
-class Enemy(private val mgr: ObjectMgr, texture: Texture) : GameObject(texture)
+class Enemy(texture: Texture) : GameObject(texture)
 {
     var hp = 0
     private var stayCounter = 0
@@ -61,8 +61,8 @@ class Enemy(private val mgr: ObjectMgr, texture: Texture) : GameObject(texture)
 
         if (hp <= 0)
         {
-            mgr.score += 100
-            mgr.newItem(x, y)
+            ObjectMgr.score += 100
+            ObjectMgr.newItem(x, y)
             deactivate()
         }
 
@@ -95,13 +95,13 @@ class Enemy(private val mgr: ObjectMgr, texture: Texture) : GameObject(texture)
     private fun shoot0()
     {
         if (shootCount == 0)
-            shootAngle = mgr.getAngleToPlayer(this)
+            shootAngle = ObjectMgr.getAngleToPlayer(this)
 
         if (stayCounter % 10 == 0)
         {
-            mgr.newShot(x, y, shootAngle - 20f)
-            mgr.newShot(x, y, shootAngle)
-            mgr.newShot(x, y, shootAngle + 20f)
+            ObjectMgr.newShot(x, y, shootAngle - 20f)
+            ObjectMgr.newShot(x, y, shootAngle)
+            ObjectMgr.newShot(x, y, shootAngle + 20f)
             shootCount++
         }
 
@@ -120,9 +120,9 @@ class Enemy(private val mgr: ObjectMgr, texture: Texture) : GameObject(texture)
 
         if (stayCounter % 4 == 0)
         {
-            mgr.newShot(x, y, shootAngle - 120)
-            mgr.newShot(x, y, shootAngle)
-            mgr.newShot(x, y, shootAngle + 120)
+            ObjectMgr.newShot(x, y, shootAngle - 120)
+            ObjectMgr.newShot(x, y, shootAngle)
+            ObjectMgr.newShot(x, y, shootAngle + 120)
             shootAngle += 20
             shootCount++
         }

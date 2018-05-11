@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 
-class Item(private val mgr: ObjectMgr, texture: Texture) : GameObject(texture)
+class Item(texture: Texture) : GameObject(texture)
 {
     var pos = Vector2()
 
@@ -31,7 +31,7 @@ class Item(private val mgr: ObjectMgr, texture: Texture) : GameObject(texture)
     {
         super.act(delta)
 
-        if (mgr.player.y > 2000)
+        if (ObjectMgr.player.y > 2000)
             approaching = true
 
         if (approaching)
@@ -42,7 +42,7 @@ class Item(private val mgr: ObjectMgr, texture: Texture) : GameObject(texture)
 
     private fun approach()
     {
-        if (mgr.isGameOver)
+        if (ObjectMgr.isGameOver)
             return
 
         if (hasActions())
@@ -51,7 +51,7 @@ class Item(private val mgr: ObjectMgr, texture: Texture) : GameObject(texture)
             pos.x = x
             pos.y = y
         }
-        pos.lerp(Vector2(mgr.player.x, mgr.player.y), .2f)
+        pos.lerp(Vector2(ObjectMgr.player.x, ObjectMgr.player.y), .2f)
         setPosition(pos.x, pos.y)
     }
 }
