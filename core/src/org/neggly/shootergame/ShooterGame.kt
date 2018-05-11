@@ -15,26 +15,41 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader
 const val WIDTH = 1440f
 const val HEIGHT = 2560f
 
+/**
+ * メインクラス.
+ *
+ * @author negset
+ */
 class ShooterGame : Game()
 {
+    /**
+     * FPS 記録用
+     */
     private val fpsLogger = FPSLogger()
 
+    /**
+     * 次のゲーム画面.
+     * null でないときに render() の最後で画面を移行する.
+     */
     var nextScreen: Screen? = null
 
+    /**
+     * アセット管理用.
+     * ゲーム全体で 1 つのインスタンスを共有する.
+     */
     val assets = AssetManager()
 
-    private var font: BitmapFont? = null
-
-    private var loading: Loading? = null
+    /**
+     * ロード画面.
+     * アセット読み込み中はこれを描画する.
+     */
+    private lateinit var loading: Loading
 
     override fun create()
     {
+        loading = Loading()
         createFont()
         setScreen(TitleScreen(this))
-
-        font = BitmapFont()
-
-        loading = Loading()
     }
 
     override fun render()
@@ -45,9 +60,10 @@ class ShooterGame : Game()
         }
         else
         {
-            loading?.render()
+            loading.render()
         }
 
+        /* nextScreen がセットされている場合はここで画面を切り替える. */
         if (nextScreen != null)
         {
             super.setScreen(nextScreen)
@@ -61,12 +77,11 @@ class ShooterGame : Game()
     {
         super.dispose()
         assets.dispose()
-        loading?.dispose()
-        font?.dispose()
+        loading.dispose()
     }
 
     /**
-     * フォントの生成および設定
+     * フォントの設定を行い,読み込み命令を出す.
      */
     private fun createFont()
     {
