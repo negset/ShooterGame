@@ -39,7 +39,7 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
 
     override fun show()
     {
-        ObjectMgr.setAssetManager(game.assets)
+        ObjectMgr.init(game.assets)
         stage.addActor(ObjectMgr)
 
         game.assets.load("bgm.mp3", Music::class.java)

@@ -25,7 +25,7 @@ object ObjectMgr : Group()
     var isGameOver = false
     var bossTime = false
 
-    fun setAssetManager(assetManager: AssetManager)
+    fun init(assetManager: AssetManager)
     {
         assets = assetManager
         assets.load("player.png", Texture::class.java)
@@ -34,6 +34,11 @@ object ObjectMgr : Group()
         assets.load("bullet.png", Texture::class.java)
         assets.load("shot.png", Texture::class.java)
         assets.load("item_2.png", Texture::class.java)
+
+        score = 0
+        life = 3
+        isGameOver = false
+        bossTime = false
     }
 
     fun setAssets()
