@@ -15,7 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.Group
  */
 object ObjectMgr : Group()
 {
-    private lateinit var assets: AssetManager
+    lateinit var assets: AssetManager
 
     lateinit var player: Player
     lateinit var boss: Boss
@@ -36,29 +36,26 @@ object ObjectMgr : Group()
     /**
      * 初期化処理を行う.
      * アセットの読み込み命令も行う.
-     *
-     * @param assetManager アセットマネージャ
      */
-    fun init(assetManager: AssetManager)
+    fun init()
     {
-        assets = assetManager
+        score = 0
+        life = 3
+        isGameOver = false
+        bossTime = false
+
         assets.load("player.png", Texture::class.java)
         assets.load("boss.png", Texture::class.java)
         assets.load("enemy.png", Texture::class.java)
         assets.load("bullet.png", Texture::class.java)
         assets.load("shot.png", Texture::class.java)
         assets.load("item_2.png", Texture::class.java)
-
-        score = 0
-        life = 3
-        isGameOver = false
-        bossTime = false
     }
 
     /**
-     *
+     * アセット読み込み完了後の処理を行う.
      */
-    fun setAssets()
+    fun afterAssetsAvailable()
     {
         player = Player(assets.get("player.png"))
         boss = Boss(assets.get("boss.png"))
