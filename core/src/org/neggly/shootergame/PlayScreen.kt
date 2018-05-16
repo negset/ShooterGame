@@ -14,6 +14,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.FitViewport
 
+/**
+ * プレイ画面クラス.
+ *
+ * @author negset
+ */
 class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
 {
     private val stage = Stage(FitViewport(WIDTH, HEIGHT))
@@ -39,7 +44,8 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
 
     override fun show()
     {
-        ObjectMgr.init(game.assets)
+        ObjectMgr.assets = game.assets
+        ObjectMgr.init()
         stage.addActor(ObjectMgr)
 
         game.assets.load("bgm.mp3", Music::class.java)
@@ -62,7 +68,7 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
 
     override fun render(delta: Float)
     {
-        if (isAssetsUnset) setAssets()
+        if (isAssetsUnset) afterAssetsAvailable()
         draw()
         update(delta)
     }
@@ -131,10 +137,10 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
         game.assets.unload("bgm.mp3")
     }
 
-    private fun setAssets()
+    private fun afterAssetsAvailable()
     {
         font = game.assets.get("default.otf")
-        ObjectMgr.setAssets()
+        ObjectMgr.afterAssetsAvailable()
         isAssetsUnset = false
 
         music = game.assets.get("bgm.mp3")
