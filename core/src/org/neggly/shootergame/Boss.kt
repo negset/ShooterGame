@@ -35,6 +35,7 @@ class Boss(texture: Texture) : GameObject(texture)
     /** 弾の射出方向 */
     private var shootAngle = 0f
 
+    /** HPゲージ描画用 */
     private val pixmap = Pixmap(1024, 32, Pixmap.Format.RGBA8888)
     private lateinit var hpTexture: Texture
 
@@ -55,6 +56,9 @@ class Boss(texture: Texture) : GameObject(texture)
         addAction(enter)
     }
 
+    /**
+     * HPゲージの描画を行うためにオーバーライドする.
+     */
     override fun draw(batch: Batch, parentAlpha: Float)
     {
         super.draw(batch, parentAlpha)
@@ -66,6 +70,7 @@ class Boss(texture: Texture) : GameObject(texture)
     {
         super.act(delta)
 
+        /* HPゲージの描画 */
         pixmap.setColor(Color.DARK_GRAY)
         pixmap.fill()
         pixmap.setColor(Color.GREEN)
@@ -125,5 +130,4 @@ class Boss(texture: Texture) : GameObject(texture)
             }
         }
     }
-
 }
