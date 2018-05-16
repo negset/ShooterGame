@@ -7,18 +7,32 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 
+/**
+ * ボスクラス.
+ */
 class Boss(texture: Texture) : GameObject(texture)
 {
+    /** フレームカウンタ */
     private var counter = 0
 
+    /** HPの上限値 */
     private val maxHp = 300
+    /** HP */
     var hp = 0
 
+    /**
+     * 動作状態を表す列挙型.
+     * ENTER: 登場
+     * DELAY: ショット開始前の待機
+     * SHOOT: ショットを撃つ
+     */
     private enum class State
     { ENTER, DELAY, SHOOT }
 
+    /** 動作状態 */
     private var state = State.ENTER
 
+    /** 弾の射出方向 */
     private var shootAngle = 0f
 
     private val pixmap = Pixmap(1024, 32, Pixmap.Format.RGBA8888)
