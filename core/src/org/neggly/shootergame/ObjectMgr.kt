@@ -31,7 +31,7 @@ object ObjectMgr : Group()
     /** ゲームオーバーか否か */
     var isGameOver = false
     /** ボス戦中か否か */
-    var bossTime = false
+    var bossBattle = false
 
     /**
      * 初期化処理を行う.
@@ -42,27 +42,27 @@ object ObjectMgr : Group()
         score = 0
         life = 3
         isGameOver = false
-        bossTime = false
+        bossBattle = false
 
         assets.load("player.png", Texture::class.java)
         assets.load("boss.png", Texture::class.java)
         assets.load("enemy.png", Texture::class.java)
         assets.load("bullet.png", Texture::class.java)
         assets.load("shot.png", Texture::class.java)
-        assets.load("item_2.png", Texture::class.java)
+        assets.load("item.png", Texture::class.java)
     }
 
     /**
-     * アセット読み込み完了後の処理を行う.
+     * マネージャからアセットを取得してセットする.
      */
-    fun afterAssetsAvailable()
+    fun setAssets()
     {
         player = Player(assets.get("player.png"))
         boss = Boss(assets.get("boss.png"))
         enemies = Array(20, { Enemy(assets.get("enemy.png")) })
         bullets = Array(50, { Bullet(assets.get("bullet.png")) })
         shots = Array(500, { Shot(assets.get("shot.png")) })
-        items = Array(20, { Item(assets.get("item_2.png")) })
+        items = Array(20, { Item(assets.get("item.png")) })
 
         addActor(player)
     }
@@ -71,7 +71,7 @@ object ObjectMgr : Group()
     {
         super.act(delta)
 
-        if (bossTime)
+        if (bossBattle)
         {
             if (!hasEnemy() && !boss.hasParent())
             {
@@ -94,15 +94,13 @@ object ObjectMgr : Group()
     private fun collisionDetectBulletAndBoss()
     {
         if (!boss.hasParent()) return
-        val rect = Rectangle(boss.x - 64, boss.y - 64,
-                128f, 128f)
         for (bullet in bullets.filter { it.hasParent() })
         {
-            if (rect.contains(bullet.x, bullet.y))
+            if (boss.bounds.contains(bullet.x, bullet.y))
             {
                 boss.hp--
                 if (boss.hp <= 0)
-                    bossTime = false
+                    bossBattle = false
                 bullet.deactivate()
             }
         }
@@ -115,11 +113,9 @@ object ObjectMgr : Group()
     {
         for (enemy in enemies.filter { it.hasParent() })
         {
-            val rect = Rectangle(enemy.x - 64, enemy.y - 64,
-                    128f, 128f)
             for (bullet in bullets.filter { it.hasParent() })
             {
-                if (rect.contains(bullet.x, bullet.y))
+                if (enemy.bounds.contains(bullet.x, bullet.y))
                 {
                     enemy.hp--
                     bullet.deactivate()
@@ -133,11 +129,10 @@ object ObjectMgr : Group()
      */
     private fun collisionDetectionPlayerAndBoss()
     {
+        if (isGameOver) return
         if (player.isInvincible) return
         if (!boss.hasParent()) return
-        val playerCircle = Circle(player.x, player.y, 30f)
-        val bossCircle = Circle(boss.x, boss.y, 80f)
-        if (playerCircle.overlaps(bossCircle))
+        if (player.bounds.overlaps(boss.bounds))
         {
             addLife(-1)
             player.isInvincible = true
@@ -149,11 +144,11 @@ object ObjectMgr : Group()
      */
     private fun collisionDetectionShotAndPlayer()
     {
+        if (isGameOver) return
         if (player.isInvincible) return
-        val circle = Circle(player.x, player.y, 30f)
         for (shot in shots.filter { it.hasParent() })
         {
-            if (circle.contains(shot.x, shot.y))
+            if (player.bounds.contains(shot.x, shot.y))
             {
                 addLife(-1)
                 player.isInvincible = true
@@ -167,12 +162,11 @@ object ObjectMgr : Group()
      */
     private fun collisionDetectionPlayerAndEnemy()
     {
+        if (isGameOver) return
         if (player.isInvincible) return
-        val playerCircle = Circle(player.x, player.y, 30f)
         for (enemy in enemies.filter { it.hasParent() })
         {
-            val enemyCircle = Circle(enemy.x, enemy.y, 80f)
-            if (playerCircle.overlaps(enemyCircle))
+            if (player.bounds.overlaps(enemy.bounds))
             {
                 addLife(-1)
                 player.isInvincible = true
@@ -185,16 +179,16 @@ object ObjectMgr : Group()
      */
     private fun collisionDetectionItemToPlayer()
     {
-        val circle1 = Circle(player.x, player.y, 20f)
-        val circle2 = Circle(player.x, player.y, 200f)
+        if (isGameOver) return
         for (item in items.filter { it.hasParent() })
         {
-            if (circle1.contains(item.x, item.y))
+            if (player.bounds.contains(item.x, item.y))
             {
                 score += 100
                 item.deactivate()
             }
-            else if (!item.approaching && circle2.contains(item.x, item.y))
+            else if (!item.approaching
+                    && player.itemApproachBounds.contains(item.x, item.y))
             {
                 item.approaching = true
             }
@@ -286,6 +280,6 @@ object ObjectMgr : Group()
         assets.unload("enemy.png")
         assets.unload("bullet.png")
         assets.unload("shot.png")
-        assets.unload("item_2.png")
+        assets.unload("item.png")
     }
 }
