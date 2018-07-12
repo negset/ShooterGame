@@ -2,6 +2,7 @@ package org.neggly.shootergame
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.math.Circle
 import com.badlogic.gdx.math.Vector2
 
 class Player(texture: Texture) : GameObject(texture)
@@ -16,6 +17,10 @@ class Player(texture: Texture) : GameObject(texture)
 
     var isInvincible = false
     private var invincibleCounter = 0
+
+    /** あたり判定用の枠 */
+    val bounds = Circle(x, y, 30f)
+    val itemApproachBounds = Circle(x, y, 100f)
 
     init
     {
@@ -69,5 +74,8 @@ class Player(texture: Texture) : GameObject(texture)
                 isInvincible = false
             }
         }
+
+        bounds.setPosition(x, y)
+        itemApproachBounds.setPosition(x, y)
     }
 }
