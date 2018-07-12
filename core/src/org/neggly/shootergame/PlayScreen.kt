@@ -2,7 +2,7 @@ package org.neggly.shootergame
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.audio.Music
-import com.badlogic.gdx.graphics.GL20
+import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
@@ -33,13 +33,13 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
 
     private var level = 1
 
-    private val sound = Gdx.audio.newSound(Gdx.files.internal("shot.wav"))
-    private lateinit var music: Music
+    private lateinit var bulletSe: Sound
+    private lateinit var bgm: Music
 
     init
     {
         Gdx.input.inputProcessor = stage
-        batch.projectionMatrix = stage.viewport.camera.combined
+        batch.projectionMatrix = stage.camera.combined
     }
 
     override fun show()
@@ -48,41 +48,28 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
         ObjectMgr.init()
         stage.addActor(ObjectMgr)
 
+        game.assets.load("bullet_se.ogg", Sound::class.java)
         game.assets.load("bgm.mp3", Music::class.java)
 
-        /* 仮実装 */
-        val texture = Texture("exit.png")
-        texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
-        val image = Image(texture)
-        image.setPosition(WIDTH - 100, HEIGHT - 100)
-        val listener = object : ClickListener()
-        {
-            override fun clicked(event: InputEvent, x: Float, y: Float)
-            {
-                game.nextScreen = TitleScreen(game)
-            }
-        }
-        image.addListener(listener)
-        stage.addActor(image)
+        createExitButton()
     }
 
     override fun render(delta: Float)
     {
-        if (isAssetsUnset) afterAssetsAvailable()
+        if (isAssetsUnset)
+            setAssets()
+
         draw()
         update(delta)
     }
 
     private fun draw()
     {
-        Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
-
         batch.begin()
-        font.draw(batch, "Score: ${ObjectMgr.score}", 30f, 100f, WIDTH - 60, Align.left, true)
-        font.draw(batch, "Life: ${ObjectMgr.life}", 30f, 100f, WIDTH - 60, Align.right, true)
+        font.draw(batch, "スコア: ${ObjectMgr.score}", 30f, 100f, WIDTH - 60, Align.left, true)
+        font.draw(batch, "ライフ: ${ObjectMgr.life}", 30f, 100f, WIDTH - 60, Align.right, true)
         if (ObjectMgr.isGameOver)
-            font.draw(batch, "Game Over", 0f, 1280f, WIDTH, Align.center, true)
+            font.draw(batch, "ゲームオーバー", 0f, 1280f, WIDTH, Align.center, true)
         batch.end()
 
         stage.draw()
@@ -97,14 +84,14 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
             ObjectMgr.newBullet(ObjectMgr.player.x, ObjectMgr.player.y)
             ObjectMgr.newBullet(ObjectMgr.player.x - 20, ObjectMgr.player.y - 10)
             ObjectMgr.newBullet(ObjectMgr.player.x + 20, ObjectMgr.player.y - 10)
-            sound.play()
+            bulletSe.play()
         }
 
-        if (!ObjectMgr.bossTime)
+        if (!ObjectMgr.bossBattle)
         {
             if (enemyCount > level * 10)
             {
-                ObjectMgr.bossTime = true
+                ObjectMgr.bossBattle = true
                 level++
                 println("level: $level")
             }
@@ -133,18 +120,42 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
         stage.dispose()
         batch.dispose()
         ObjectMgr.dispose()
-        sound.dispose()
+        game.assets.unload("bullet_se.ogg")
         game.assets.unload("bgm.mp3")
     }
 
-    private fun afterAssetsAvailable()
+    /**
+     * マネージャからアセットを取得してセットする.
+     */
+    private fun setAssets()
     {
-        font = game.assets.get("default.otf")
-        ObjectMgr.afterAssetsAvailable()
+        font = game.assets.get("font.ttf")
+        ObjectMgr.setAssets()
         isAssetsUnset = false
 
-        music = game.assets.get("bgm.mp3")
-        music.isLooping = true
-        music.play()
+        bulletSe = game.assets.get("bullet_se.ogg")
+        bgm = game.assets.get("bgm.mp3")
+        bgm.isLooping = true
+        bgm.play()
+    }
+
+    /**
+     * タイトル画面に戻るボタンを作成する。
+     */
+    private fun createExitButton()
+    {
+        val texture = Texture("exit.png")
+        texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
+        val image = Image(texture)
+        image.setPosition(WIDTH - 100, HEIGHT - 100)
+        val listener = object : ClickListener()
+        {
+            override fun clicked(event: InputEvent, x: Float, y: Float)
+            {
+                game.nextScreen = TitleScreen(game)
+            }
+        }
+        image.addListener(listener)
+        stage.addActor(image)
     }
 }
