@@ -1,11 +1,13 @@
 package org.neggly.shootergame
 
 import com.badlogic.gdx.Game
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.FPSLogger
+import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
@@ -54,14 +56,13 @@ class ShooterGame : Game()
 
     override fun render()
     {
+        Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
+
         if (assets.update())
-        {
             super.render()
-        }
         else
-        {
             loading.render()
-        }
 
         /* nextScreen がセットされている場合はここで画面を切り替える. */
         if (nextScreen != null)
@@ -87,16 +88,16 @@ class ShooterGame : Game()
     {
         val resolver = InternalFileHandleResolver()
         assets.setLoader(FreeTypeFontGenerator::class.java, FreeTypeFontGeneratorLoader(resolver))
-        assets.setLoader(BitmapFont::class.java, ".otf", FreetypeFontLoader(resolver))
+        assets.setLoader(BitmapFont::class.java, ".ttf", FreetypeFontLoader(resolver))
         val params = FreetypeFontLoader.FreeTypeFontLoaderParameter()
-        params.fontFileName = "default.otf"
+        params.fontFileName = "font.ttf"
         params.fontParameters.size = 80
         params.fontParameters.color = Color.WHITE
-        params.fontParameters.borderColor = Color.DARK_GRAY
+        params.fontParameters.borderColor = Color(0x2962FF)
         params.fontParameters.borderWidth = 8f
         params.fontParameters.magFilter = Texture.TextureFilter.Linear
         params.fontParameters.minFilter = Texture.TextureFilter.Linear
         params.fontParameters.incremental = true
-        assets.load("default.otf", BitmapFont::class.java, params)
+        assets.load("font.ttf", BitmapFont::class.java, params)
     }
 }
