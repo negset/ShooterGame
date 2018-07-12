@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
+import com.badlogic.gdx.math.Circle
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 
@@ -36,8 +37,11 @@ class Boss(texture: Texture) : GameObject(texture)
     private var shootAngle = 0f
 
     /** HPゲージ描画用 */
-    private val pixmap = Pixmap(1024, 32, Pixmap.Format.RGBA8888)
+    private val hpPixmap = Pixmap(1024, 32, Pixmap.Format.RGBA8888)
     private lateinit var hpTexture: Texture
+
+    /** あたり判定用の枠 */
+    val bounds = Circle(x, y, 64f)
 
     override fun activate(x: Float, y: Float)
     {
@@ -48,9 +52,9 @@ class Boss(texture: Texture) : GameObject(texture)
         state = State.ENTER
         shootAngle = 0f
 
-        pixmap.setColor(Color.GREEN)
-        pixmap.fillRectangle(0, 0, 1024, 32)
-        hpTexture = Texture(pixmap)
+        hpPixmap.setColor(Color.GREEN)
+        hpPixmap.fillRectangle(0, 0, 1024, 32)
+        hpTexture = Texture(hpPixmap)
 
         val enter = Actions.moveBy(0f, -800f, 1.5f, Interpolation.fade)
         addAction(enter)
@@ -71,18 +75,18 @@ class Boss(texture: Texture) : GameObject(texture)
         super.act(delta)
 
         /* HPゲージの描画 */
-        pixmap.setColor(Color.DARK_GRAY)
-        pixmap.fill()
-        pixmap.setColor(Color.GREEN)
-        pixmap.fillRectangle(0, 0, 1024 * hp / maxHp, 32)
-        hpTexture.draw(pixmap, 0, 0)
+        hpPixmap.setColor(Color.DARK_GRAY)
+        hpPixmap.fill()
+        hpPixmap.setColor(Color.GREEN)
+        hpPixmap.fillRectangle(0, 0, 1024 * hp / maxHp, 32)
+        hpTexture.draw(hpPixmap, 0, 0)
 
         if (hp <= 0)
         {
             ObjectMgr.score += 1000
-            ObjectMgr.newItem(x, y)
-            ObjectMgr.newItem(x-36, y-54)
-            ObjectMgr.newItem(x+36, y-54)
+            ObjectMgr.newItem(x, y + 36)
+            ObjectMgr.newItem(x - 48, y - 36)
+            ObjectMgr.newItem(x + 48, y - 36)
             deactivate()
         }
 
@@ -112,6 +116,8 @@ class Boss(texture: Texture) : GameObject(texture)
                 counter++
             }
         }
+
+        bounds.setPosition(x, y)
     }
 
     private fun shoot()
