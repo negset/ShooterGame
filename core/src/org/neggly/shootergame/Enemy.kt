@@ -1,6 +1,7 @@
 package org.neggly.shootergame
 
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.math.Circle
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
@@ -24,6 +25,9 @@ class Enemy(texture: Texture) : GameObject(texture)
     private var shootAngle = 0f
 
     private var shootPattern = 0
+
+    /** あたり判定用の枠 */
+    val bounds = Circle(x, y, 64f)
 
     override fun activate(x: Float, y: Float)
     {
@@ -90,6 +94,8 @@ class Enemy(texture: Texture) : GameObject(texture)
                     deactivate()
             }
         }
+
+        bounds.setPosition(x, y)
     }
 
     private fun shoot0()
