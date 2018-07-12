@@ -43,15 +43,17 @@ class Item(texture: Texture) : GameObject(texture)
     private fun approach()
     {
         if (ObjectMgr.isGameOver)
+        {
+            approaching = false
             return
-
+        }
         if (hasActions())
         {
             clearActions()
             pos.x = x
             pos.y = y
         }
-        pos.lerp(Vector2(ObjectMgr.player.x, ObjectMgr.player.y), .2f)
+        pos.lerp(Vector2(ObjectMgr.player.x, ObjectMgr.player.y), .25f)
         setPosition(pos.x, pos.y)
     }
 }
