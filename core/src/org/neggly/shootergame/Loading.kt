@@ -14,7 +14,7 @@ class Loading
         val tex = Texture("loading.png")
         tex.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
         val image = Image(tex)
-        image.setPosition(100f, 100f)
+        image.setPosition(30f, 30f)
         stage.addActor(image)
     }
 
