@@ -45,8 +45,11 @@ class Item(texture: Texture) : GameObject(texture)
         if (ObjectMgr.isGameOver)
         {
             approaching = false
+            val down = Actions.moveBy(0f, -600f, 1.5f)
+            addAction(down)
             return
         }
+
         if (hasActions())
         {
             clearActions()
