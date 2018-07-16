@@ -48,7 +48,7 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
         ObjectMgr.init()
         stage.addActor(ObjectMgr)
 
-        game.assets.load("bullet_se.ogg", Sound::class.java)
+        game.assets.load("bullet_se.wav", Sound::class.java)
         game.assets.load("bgm.mp3", Music::class.java)
 
         createExitButton()
@@ -81,9 +81,9 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
 
         if (!ObjectMgr.isGameOver && Gdx.input.isTouched && counter % 5 == 0)
         {
-            ObjectMgr.newBullet(ObjectMgr.player.x, ObjectMgr.player.y)
-            ObjectMgr.newBullet(ObjectMgr.player.x - 20, ObjectMgr.player.y - 10)
-            ObjectMgr.newBullet(ObjectMgr.player.x + 20, ObjectMgr.player.y - 10)
+            ObjectMgr.newBullet(ObjectMgr.player.x, ObjectMgr.player.y + 128)
+            ObjectMgr.newBullet(ObjectMgr.player.x - 25, ObjectMgr.player.y + 108)
+            ObjectMgr.newBullet(ObjectMgr.player.x + 25, ObjectMgr.player.y + 108)
             bulletSe.play()
         }
 
@@ -120,7 +120,7 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
         stage.dispose()
         batch.dispose()
         ObjectMgr.dispose()
-        game.assets.unload("bullet_se.ogg")
+        game.assets.unload("bullet_se.wav")
         game.assets.unload("bgm.mp3")
     }
 
@@ -133,7 +133,7 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
         ObjectMgr.setAssets()
         isAssetsUnset = false
 
-        bulletSe = game.assets.get("bullet_se.ogg")
+        bulletSe = game.assets.get("bullet_se.wav")
         bgm = game.assets.get("bgm.mp3")
         bgm.isLooping = true
         bgm.play()
