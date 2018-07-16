@@ -13,6 +13,7 @@ object DesktopLauncher
         config.width = 540
         config.height = 960
         config.resizable = false
+        config.title = "シューティングゲーム"
         LwjglApplication(ShooterGame(), config)
     }
 }
