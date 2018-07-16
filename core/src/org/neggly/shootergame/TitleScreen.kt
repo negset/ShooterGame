@@ -15,12 +15,17 @@ class TitleScreen(game: ShooterGame) : ScreenAdapter(game)
 
     private lateinit var font: BitmapFont
 
+    private val bg = Bg()
+
     private var isAssetsUnset = true
 
     override fun show()
     {
         Gdx.input.inputProcessor = stage
         batch.projectionMatrix = stage.camera.combined
+
+        bg.loadAssets(game.assets)
+        stage.addActor(bg)
     }
 
     override fun render(delta: Float)
@@ -44,6 +49,8 @@ class TitleScreen(game: ShooterGame) : ScreenAdapter(game)
 
     private fun draw()
     {
+        stage.draw()
+
         batch.begin()
         font.draw(batch, "シューティングゲーム", 0f, 1900f, WIDTH, Align.center, true)
         font.draw(batch, "タッチで開始", 0f, 1000f, WIDTH, Align.center, true)
@@ -65,6 +72,7 @@ class TitleScreen(game: ShooterGame) : ScreenAdapter(game)
     {
         stage.dispose()
         batch.dispose()
+        bg.dispose()
     }
 
     private fun setAssets()

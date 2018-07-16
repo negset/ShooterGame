@@ -26,6 +26,8 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
 
     private lateinit var font: BitmapFont
 
+    private val bg = Bg()
+
     private var counter = 0
     private var enemyCount = 0
 
@@ -44,6 +46,9 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
 
     override fun show()
     {
+        bg.loadAssets(game.assets)
+        stage.addActor(bg)
+
         ObjectMgr.assets = game.assets
         ObjectMgr.init()
         stage.addActor(ObjectMgr)
@@ -119,6 +124,7 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
     {
         stage.dispose()
         batch.dispose()
+        bg.dispose()
         ObjectMgr.dispose()
         game.assets.unload("bullet_se.wav")
         game.assets.unload("bgm.mp3")
