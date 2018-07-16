@@ -2,9 +2,7 @@ package org.neggly.shootergame
 
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Texture
-import com.badlogic.gdx.math.Circle
 import com.badlogic.gdx.math.MathUtils
-import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Group
 
@@ -59,10 +57,10 @@ object ObjectMgr : Group()
     {
         player = Player(assets.get("player.png"))
         boss = Boss(assets.get("boss.png"))
-        enemies = Array(20, { Enemy(assets.get("enemy.png")) })
-        bullets = Array(50, { Bullet(assets.get("bullet.png")) })
-        shots = Array(500, { Shot(assets.get("shot.png")) })
-        items = Array(20, { Item(assets.get("item.png")) })
+        enemies = Array(20) { Enemy(assets.get("enemy.png")) }
+        bullets = Array(50) { Bullet(assets.get("bullet.png")) }
+        shots = Array(500) { Shot(assets.get("shot.png")) }
+        items = Array(20) { Item(assets.get("item.png")) }
 
         addActor(player)
     }
