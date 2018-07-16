@@ -83,7 +83,7 @@ class Boss(texture: Texture) : GameObject(texture)
 
         if (hp <= 0)
         {
-            ObjectMgr.score += 1000
+            ObjectMgr.score += 3000
             ObjectMgr.newItem(x, y + 36)
             ObjectMgr.newItem(x - 48, y - 36)
             ObjectMgr.newItem(x + 48, y - 36)

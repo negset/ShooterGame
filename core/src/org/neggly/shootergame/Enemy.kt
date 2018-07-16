@@ -65,7 +65,7 @@ class Enemy(texture: Texture) : GameObject(texture)
 
         if (hp <= 0)
         {
-            ObjectMgr.score += 100
+            ObjectMgr.score += 300
             ObjectMgr.newItem(x, y)
             deactivate()
         }

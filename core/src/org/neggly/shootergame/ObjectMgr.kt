@@ -96,9 +96,9 @@ object ObjectMgr : Group()
         {
             if (boss.bounds.contains(bullet.x, bullet.y))
             {
-                boss.hp--
-                if (boss.hp <= 0)
+                if (--boss.hp <= 0)
                     bossBattle = false
+                score += 10
                 bullet.deactivate()
             }
         }
@@ -116,6 +116,7 @@ object ObjectMgr : Group()
                 if (enemy.bounds.contains(bullet.x, bullet.y))
                 {
                     enemy.hp--
+                    score += 10
                     bullet.deactivate()
                 }
             }
