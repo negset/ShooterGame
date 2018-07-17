@@ -7,13 +7,13 @@ import com.badlogic.gdx.utils.viewport.FitViewport
 
 class Loading
 {
-    private var stage: Stage = Stage(FitViewport(WIDTH, HEIGHT))
+    private val stage: Stage = Stage(FitViewport(WIDTH, HEIGHT))
 
     init
     {
-        val tex = Texture("loading.png")
-        tex.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
-        val image = Image(tex)
+        val texture = Texture("loading.png")
+        texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
+        val image = Image(texture)
         image.setPosition(30f, 30f)
         stage.addActor(image)
     }
