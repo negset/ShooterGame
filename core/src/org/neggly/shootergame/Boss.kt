@@ -116,7 +116,10 @@ class Boss(texture: Texture) : GameObject(texture)
                 counter++
             }
         }
+    }
 
+    override fun positionChanged()
+    {
         bounds.setPosition(x, y)
     }
 

@@ -35,7 +35,7 @@ class Player(texture: Texture) : GameObject(texture)
         if (Gdx.input.isTouched)
         {
             touchPoint.set(Gdx.input.x.toFloat(), Gdx.input.y.toFloat())
-            stage.viewport.unproject(touchPoint)
+            stage.screenToStageCoordinates(touchPoint)
 
             if (!touching)
             {
@@ -75,7 +75,11 @@ class Player(texture: Texture) : GameObject(texture)
             }
         }
 
-        bounds.setPosition(x, y)
         itemApproachBounds.setPosition(x, y)
+    }
+
+    override fun positionChanged()
+    {
+        bounds.setPosition(x, y)
     }
 }

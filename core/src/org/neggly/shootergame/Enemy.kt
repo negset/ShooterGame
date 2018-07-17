@@ -94,7 +94,10 @@ class Enemy(texture: Texture) : GameObject(texture)
                     deactivate()
             }
         }
+    }
 
+    override fun positionChanged()
+    {
         bounds.setPosition(x, y)
     }
 
