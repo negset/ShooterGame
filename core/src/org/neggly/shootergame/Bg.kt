@@ -7,6 +7,11 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Group
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 
+/**
+ * 背景クラス.
+ *
+ * @author negset
+ */
 class Bg : Group()
 {
     private lateinit var assets: AssetManager
