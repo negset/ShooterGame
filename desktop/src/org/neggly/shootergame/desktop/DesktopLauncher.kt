@@ -10,10 +10,10 @@ object DesktopLauncher
     fun main(arg: Array<String>)
     {
         val config = LwjglApplicationConfiguration()
+        config.title = "シューティングゲーム"
         config.width = 540
         config.height = 960
         config.resizable = false
-        config.title = "シューティングゲーム"
         LwjglApplication(ShooterGame(), config)
     }
 }
