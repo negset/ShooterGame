@@ -95,16 +95,18 @@ class TitleScreen(game: ShooterGame) : ScreenAdapter(game)
             bg = btnBg
             font = game.assets.get("font.ttf")
             text = "はじめる"
+            offset = 30f
             setPosition(WIDTH / 2, 1050f)
-            setSize(600f, 180f)
+            setSize(500f, 180f)
         }
 
         creditsBtn.apply {
             bg = btnBg
             font = game.assets.get("font.ttf")
             text = "クレジット"
+            offset = 30f
             setPosition(WIDTH / 2, 750f)
-            setSize(600f, 180f)
+            setSize(500f, 180f)
         }
 
         isAssetsUnset = false

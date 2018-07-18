@@ -95,9 +95,10 @@ class CreditsScreen(game: ShooterGame) : ScreenAdapter(game)
         titleBtn.apply {
             bg = btnBg
             font = game.assets.get("font.ttf")
-            text = "タイトルに戻る"
+            text = "もどる"
+            offset = 30f
             setPosition(WIDTH / 2, 450f)
-            setSize(600f, 180f)
+            setSize(500f, 180f)
         }
 
         isAssetsUnset = false
