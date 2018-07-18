@@ -94,7 +94,7 @@ class ShooterGame : Game()
         params.fontParameters.size = 80
         params.fontParameters.color = Color.WHITE
         params.fontParameters.borderColor = Color(0x2962FF)
-        params.fontParameters.borderWidth = 8f
+        params.fontParameters.borderWidth = 6f
         params.fontParameters.magFilter = Texture.TextureFilter.Linear
         params.fontParameters.minFilter = Texture.TextureFilter.Linear
         params.fontParameters.incremental = true
