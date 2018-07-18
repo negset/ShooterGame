@@ -29,9 +29,7 @@ class TextButton : Actor()
     {
         batch.setColor(color.r, color.g, color.b, color.a * parentAlpha)
         bg?.draw(batch, x - width / 2, y - height / 2, width, height)
-
-        if (font != null)
-            font!!.draw(batch, text, 0f, y + offset, WIDTH, Align.center, true)
+        font?.draw(batch, text, 0f, y + offset, WIDTH, Align.center, true)
     }
 
     fun isClicked(): Boolean
