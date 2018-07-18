@@ -12,7 +12,13 @@ import com.badlogic.gdx.utils.Align
 class TextButton : Actor()
 {
     var bg: NinePatch? = null
+    var offset = 0f
     var font: BitmapFont? = null
+        set(value)
+        {
+            field = value
+            offset = (field?.xHeight ?: 0f) / 2
+        }
     var text: String = ""
 
     private val bounds = Rectangle()
@@ -25,7 +31,7 @@ class TextButton : Actor()
         bg?.draw(batch, x - width / 2, y - height / 2, width, height)
 
         if (font != null)
-            font!!.draw(batch, text, 0f, y + font!!.xHeight / 2, WIDTH, Align.center, true)
+            font!!.draw(batch, text, 0f, y + offset, WIDTH, Align.center, true)
     }
 
     fun isClicked(): Boolean
