@@ -25,11 +25,6 @@ const val HEIGHT = 2560f
 class ShooterGame : Game()
 {
     /**
-     * FPS 記録用
-     */
-    private val fpsLogger = FPSLogger()
-
-    /**
      * 次のゲーム画面.
      * null でないときに render() の最後で画面を移行する.
      */
@@ -45,11 +40,15 @@ class ShooterGame : Game()
      * ロード画面.
      * アセット読み込み中はこれを描画する.
      */
-    private lateinit var loading: Loading
+    private val loading by lazy { Loading() }
+
+    /**
+     * FPS 記録用
+     */
+    private val fpsLogger = FPSLogger()
 
     override fun create()
     {
-        loading = Loading()
         createFont()
         setScreen(TitleScreen(this))
     }
@@ -89,15 +88,16 @@ class ShooterGame : Game()
         val resolver = InternalFileHandleResolver()
         assets.setLoader(FreeTypeFontGenerator::class.java, FreeTypeFontGeneratorLoader(resolver))
         assets.setLoader(BitmapFont::class.java, ".ttf", FreetypeFontLoader(resolver))
-        val params = FreetypeFontLoader.FreeTypeFontLoaderParameter()
-        params.fontFileName = "font.ttf"
-        params.fontParameters.size = 80
-        params.fontParameters.color = Color.WHITE
-        params.fontParameters.borderColor = Color(0x2962FF)
-        params.fontParameters.borderWidth = 6f
-        params.fontParameters.magFilter = Texture.TextureFilter.Linear
-        params.fontParameters.minFilter = Texture.TextureFilter.Linear
-        params.fontParameters.incremental = true
-        assets.load("font.ttf", BitmapFont::class.java, params)
+        FreetypeFontLoader.FreeTypeFontLoaderParameter().apply {
+            fontFileName = "font.ttf"
+            fontParameters.size = 80
+            fontParameters.color = Color.WHITE
+            fontParameters.borderColor = Color.DARK_GRAY
+            fontParameters.borderWidth = 6f
+            fontParameters.magFilter = Texture.TextureFilter.Linear
+            fontParameters.minFilter = Texture.TextureFilter.Linear
+            fontParameters.incremental = true
+            assets.load("font.ttf", BitmapFont::class.java, this)
+        }
     }
 }
