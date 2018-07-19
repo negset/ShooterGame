@@ -7,7 +7,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport
 
 class Loading
 {
-    private val stage: Stage = Stage(FitViewport(WIDTH, HEIGHT))
+    private val stage = Stage(FitViewport(WIDTH, HEIGHT))
 
     init
     {
