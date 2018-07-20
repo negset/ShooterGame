@@ -70,7 +70,7 @@ class ShooterGame : Game()
             nextScreen = null
         }
 
-        //fpsLogger.log()
+        fpsLogger.log()
     }
 
     override fun dispose()
