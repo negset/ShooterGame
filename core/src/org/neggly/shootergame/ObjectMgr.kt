@@ -13,10 +13,12 @@ import com.badlogic.gdx.scenes.scene2d.Group
  */
 object ObjectMgr : Group()
 {
-    lateinit var assets: AssetManager
+    lateinit var assets: AssetsLoader
 
     lateinit var player: Player
+        private set
     lateinit var boss: Boss
+        private set
     private lateinit var enemies: Array<Enemy>
     private lateinit var bullets: Array<Bullet>
     private lateinit var shots: Array<Shot>
@@ -33,7 +35,6 @@ object ObjectMgr : Group()
 
     /**
      * 初期化処理を行う.
-     * アセットの読み込み命令も行う.
      */
     fun init()
     {
@@ -42,25 +43,12 @@ object ObjectMgr : Group()
         isGameOver = false
         bossBattle = false
 
-        assets.load("player.png", Texture::class.java)
-        assets.load("boss.png", Texture::class.java)
-        assets.load("enemy.png", Texture::class.java)
-        assets.load("bullet.png", Texture::class.java)
-        assets.load("shot.png", Texture::class.java)
-        assets.load("item.png", Texture::class.java)
-    }
-
-    /**
-     * マネージャからアセットを取得してセットする.
-     */
-    fun setAssets()
-    {
-        player = Player(assets.get("player.png"))
-        boss = Boss(assets.get("boss.png"))
-        enemies = Array(20) { Enemy(assets.get("enemy.png")) }
-        bullets = Array(50) { Bullet(assets.get("bullet.png")) }
-        shots = Array(500) { Shot(assets.get("shot.png")) }
-        items = Array(20) { Item(assets.get("item.png")) }
+        player = Player(assets.get("player.png") as Texture)
+        boss = Boss(assets.get("boss.png") as Texture)
+        enemies = Array(20) { Enemy(assets.get("enemy.png") as Texture) }
+        bullets = Array(50) { Bullet(assets.get("bullet.png") as Texture) }
+        shots = Array(500) { Shot(assets.get("shot.png") as Texture) }
+        items = Array(20) { Item(assets.get("item.png") as Texture) }
 
         addActor(player)
     }
@@ -274,11 +262,5 @@ object ObjectMgr : Group()
     {
         clearChildren()
         remove()
-        assets.unload("player.png")
-        assets.unload("boss.png")
-        assets.unload("enemy.png")
-        assets.unload("bullet.png")
-        assets.unload("shot.png")
-        assets.unload("item.png")
     }
 }

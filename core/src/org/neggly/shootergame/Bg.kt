@@ -1,6 +1,5 @@
 package org.neggly.shootergame
 
-import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.Actor
@@ -12,47 +11,24 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions
  *
  * @author negset
  */
-class Bg : Group()
+class Bg(assets: AssetsLoader) : Group()
 {
-    private lateinit var assets: AssetManager
-
-    private lateinit var stars: Array<Star>
-
-    private var isAssetsUnset = true
-
-    override fun act(delta: Float)
-    {
-        if (isAssetsUnset)
-            setAssets()
-
-        super.act(delta)
+    private val stars = Array(30) {
+        Star(assets.get("bg_star.png") as Texture,
+                WIDTH * Math.random().toFloat(),
+                HEIGHT * Math.random().toFloat())
     }
 
-    fun loadAssets(assets: AssetManager)
+    init
     {
-        this.assets = assets
-        assets.load("bg_star.png", Texture::class.java)
-    }
-
-    private fun setAssets()
-    {
-        stars = Array(30) {
-            Star(assets.get("bg_star.png"),
-                    WIDTH * Math.random().toFloat(),
-                    HEIGHT * Math.random().toFloat())
-        }
-
         for (star in stars)
             addActor(star)
-
-        isAssetsUnset = false
     }
 
     fun dispose()
     {
         clearChildren()
         remove()
-        assets.unload("bg_star.png")
     }
 
     /**
