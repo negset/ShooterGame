@@ -24,7 +24,7 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
     private val stage = Stage(FitViewport(WIDTH, HEIGHT))
     private val batch = SpriteBatch()
 
-    private val font by lazy { game.assets.get("font.ttf", BitmapFont::class.java) }
+    private val font by lazy { game.assets.get<BitmapFont>("font.ttf") }
 
     private val bg = Bg()
 

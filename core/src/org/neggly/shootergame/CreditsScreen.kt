@@ -15,7 +15,7 @@ class CreditsScreen(game: ShooterGame) : ScreenAdapter(game)
     private val stage = Stage(FitViewport(WIDTH, HEIGHT))
     private val batch = SpriteBatch()
 
-    private lateinit var font: BitmapFont
+    private val font by lazy { game.assets.get<BitmapFont>("font.ttf") }
 
     private val bg = Bg()
 
@@ -87,8 +87,6 @@ class CreditsScreen(game: ShooterGame) : ScreenAdapter(game)
 
     private fun setAssets()
     {
-        font = game.assets.get("font.ttf")
-
         val btnBgTex: Texture = game.assets.get("button_bg.png")
         btnBgTex.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
         val btnBg = NinePatch(btnBgTex, 64, 64, 64, 64)
