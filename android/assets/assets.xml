@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<assets-list>
+  <scene id="common">
+    <asset path="button_bg.png" class="com.badlogic.gdx.graphics.Texture" />
+    <asset manual-load="true" path="font.ttf" class="com.badlogic.gdx.graphics.g2d.BitmapFont" />
+  </scene>
+
+  <scene id="title">
+    <asset path="bg_star.png" class="com.badlogic.gdx.graphics.Texture" />
+  </scene>
+
+  <scene id="play">
+    <asset path="bg_star.png" class="com.badlogic.gdx.graphics.Texture" />
+    <asset path="boss.png" class="com.badlogic.gdx.graphics.Texture" />
+    <asset path="bullet.png" class="com.badlogic.gdx.graphics.Texture" />
+    <asset path="enemy.png" class="com.badlogic.gdx.graphics.Texture" />
+    <asset path="exit.png" class="com.badlogic.gdx.graphics.Texture" />
+    <asset path="item.png" class="com.badlogic.gdx.graphics.Texture" />
+    <asset path="player.png" class="com.badlogic.gdx.graphics.Texture" />
+    <asset path="shot.png" class="com.badlogic.gdx.graphics.Texture" />
+    <asset path="bgm.mp3" class="com.badlogic.gdx.audio.Music" />
+    <asset path="bullet_se.wav" class="com.badlogic.gdx.audio.Sound" />
+  </scene>
+
+  <scene id="credits">
+    <asset path="bg_star.png" class="com.badlogic.gdx.graphics.Texture" />
+  </scene>
+</assets-list>

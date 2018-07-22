@@ -2,8 +2,6 @@ package org.neggly.shootergame
 
 import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Screen
-import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.FPSLogger
@@ -24,17 +22,14 @@ const val HEIGHT = 2560f
  */
 class ShooterGame : Game()
 {
-    /**
-     * 次のゲーム画面.
-     * null でないときに render() の最後で画面を移行する.
-     */
-    var nextScreen: Screen? = null
+    var nextScreen: ScreenState? = null
+        set (value)
+        {
+            field = value
+            field?.let { assets.load(it.assetsSceneId) }
+        }
 
-    /**
-     * アセット管理用.
-     * ゲーム全体で 1 つのインスタンスを共有する.
-     */
-    val assets = AssetManager()
+    val assets = AssetsLoader("assets.xml")
 
     /**
      * ロード画面.
@@ -49,8 +44,11 @@ class ShooterGame : Game()
 
     override fun create()
     {
-        createFont()
-        setScreen(TitleScreen(this))
+        loadFont()
+
+        assets.load("common")
+
+        nextScreen = ScreenState.TITLE
     }
 
     override fun render()
@@ -59,16 +57,17 @@ class ShooterGame : Game()
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
         if (assets.update())
+        {
+            // nextScreenがセットされていたら,スクリーンを切り替え,nullに戻す.
+            nextScreen?.let {
+                setScreen(it.newScreen(this))
+                nextScreen = null
+            }
+
             super.render()
+        }
         else
             loading.render()
-
-        /* nextScreen がセットされている場合はここで画面を切り替える. */
-        if (nextScreen != null)
-        {
-            super.setScreen(nextScreen)
-            nextScreen = null
-        }
 
         fpsLogger.log()
     }
@@ -76,6 +75,7 @@ class ShooterGame : Game()
     override fun dispose()
     {
         super.dispose()
+        assets.unload("common")
         assets.dispose()
         loading.dispose()
     }
@@ -83,12 +83,10 @@ class ShooterGame : Game()
     /**
      * フォントの設定を行い,読み込み命令を出す.
      */
-    private fun createFont()
+    private fun loadFont()
     {
         val resolver = InternalFileHandleResolver()
-        assets.setLoader(FreeTypeFontGenerator::class.java, FreeTypeFontGeneratorLoader(resolver))
-        assets.setLoader(BitmapFont::class.java, ".ttf", FreetypeFontLoader(resolver))
-        FreetypeFontLoader.FreeTypeFontLoaderParameter().apply {
+        val param = FreetypeFontLoader.FreeTypeFontLoaderParameter().apply {
             fontFileName = "font.ttf"
             fontParameters.size = 80
             fontParameters.color = Color.WHITE
@@ -97,7 +95,11 @@ class ShooterGame : Game()
             fontParameters.magFilter = Texture.TextureFilter.Linear
             fontParameters.minFilter = Texture.TextureFilter.Linear
             fontParameters.incremental = true
-            assets.load("font.ttf", BitmapFont::class.java, this)
+        }
+        assets.manager.apply {
+            setLoader(FreeTypeFontGenerator::class.java, FreeTypeFontGeneratorLoader(resolver))
+            setLoader(BitmapFont::class.java, ".ttf", FreetypeFontLoader(resolver))
+            load("font.ttf", BitmapFont::class.java, param)
         }
     }
 }

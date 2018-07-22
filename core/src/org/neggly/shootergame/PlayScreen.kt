@@ -24,46 +24,37 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
     private val stage = Stage(FitViewport(WIDTH, HEIGHT))
     private val batch = SpriteBatch()
 
-    private val font by lazy { game.assets.get<BitmapFont>("font.ttf") }
+    private val font = game.assets.get("font.ttf") as BitmapFont
 
-    private val bg = Bg()
+    private val bg = Bg(game.assets)
 
     private var counter = 0
     private var enemyCount = 0
 
-    private var isAssetsUnset = true
-
     private var level = 1
 
-    private lateinit var bulletSe: Sound
-    private lateinit var bgm: Music
-
-    init
-    {
-        Gdx.input.inputProcessor = stage
-        batch.projectionMatrix = stage.camera.combined
-    }
+    private val bulletSe = game.assets.get("bullet_se.wav") as Sound
+    private val bgm = game.assets.get("bgm.mp3") as Music
 
     override fun show()
     {
-        bg.loadAssets(game.assets)
-        stage.addActor(bg)
+        Gdx.input.inputProcessor = stage
+        batch.projectionMatrix = stage.camera.combined
+
+        bgm.isLooping = true
+        bgm.play()
 
         ObjectMgr.assets = game.assets
         ObjectMgr.init()
-        stage.addActor(ObjectMgr)
 
-        game.assets.load("bullet_se.wav", Sound::class.java)
-        game.assets.load("bgm.mp3", Music::class.java)
+        stage.addActor(bg)
+        stage.addActor(ObjectMgr)
 
         createExitButton()
     }
 
     override fun render(delta: Float)
     {
-        if (isAssetsUnset)
-            setAssets()
-
         draw()
         update(delta)
     }
@@ -126,22 +117,7 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
         batch.dispose()
         bg.dispose()
         ObjectMgr.dispose()
-        game.assets.unload("bullet_se.wav")
-        game.assets.unload("bgm.mp3")
-    }
-
-    /**
-     * マネージャからアセットを取得してセットする.
-     */
-    private fun setAssets()
-    {
-        ObjectMgr.setAssets()
-        isAssetsUnset = false
-
-        bulletSe = game.assets.get("bullet_se.wav")
-        bgm = game.assets.get("bgm.mp3")
-        bgm.isLooping = true
-        bgm.play()
+        game.assets.unload("play")
     }
 
     /**
@@ -157,7 +133,7 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
         {
             override fun clicked(event: InputEvent, x: Float, y: Float)
             {
-                game.nextScreen = TitleScreen(game)
+                game.nextScreen = ScreenState.TITLE
             }
         }
         image.addListener(listener)

@@ -10,6 +10,10 @@ import com.badlogic.gdx.Screen
  */
 open class ScreenAdapter(val game: ShooterGame) : Screen
 {
+    open fun load()
+    {
+    }
+
     override fun show()
     {
     }
