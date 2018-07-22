@@ -249,7 +249,7 @@ object ObjectMgr : Group()
 
     fun hasEnemy(): Boolean
     {
-        return enemies.filter { it.hasParent() }.isNotEmpty()
+        return enemies.any { it.hasParent() }
     }
 
     /**
