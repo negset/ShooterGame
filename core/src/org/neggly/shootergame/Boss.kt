@@ -13,6 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions
  */
 class Boss(texture: Texture) : GameObject(texture)
 {
+    private val mgr by lazy { parent as ObjectMgr }
+
     /** フレームカウンタ */
     private var counter = 0
 
@@ -83,10 +85,10 @@ class Boss(texture: Texture) : GameObject(texture)
 
         if (hp <= 0)
         {
-            ObjectMgr.score += 3000
-            ObjectMgr.newItem(x, y + 36)
-            ObjectMgr.newItem(x - 48, y - 36)
-            ObjectMgr.newItem(x + 48, y - 36)
+            mgr.score += 3000
+            mgr.newItem(x, y + 36)
+            mgr.newItem(x - 48, y - 36)
+            mgr.newItem(x + 48, y - 36)
             deactivate()
         }
 
@@ -129,12 +131,12 @@ class Boss(texture: Texture) : GameObject(texture)
         {
             counter % 3 == 0 ->
             {
-                ObjectMgr.newShot(x, y, shootAngle)
-                ObjectMgr.newShot(x, y, shootAngle - 60)
-                ObjectMgr.newShot(x, y, shootAngle - 120)
-                ObjectMgr.newShot(x, y, shootAngle + 60)
-                ObjectMgr.newShot(x, y, shootAngle + 120)
-                ObjectMgr.newShot(x, y, shootAngle + 180)
+                mgr.newShot(x, y, shootAngle)
+                mgr.newShot(x, y, shootAngle - 60)
+                mgr.newShot(x, y, shootAngle - 120)
+                mgr.newShot(x, y, shootAngle + 60)
+                mgr.newShot(x, y, shootAngle + 120)
+                mgr.newShot(x, y, shootAngle + 180)
                 shootAngle += 34
             }
         }

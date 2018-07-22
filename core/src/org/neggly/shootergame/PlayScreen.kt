@@ -27,6 +27,7 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
     private val font = game.assets.get("font.ttf") as BitmapFont
 
     private val bg = Bg(game.assets)
+    private val mgr = ObjectMgr(game.assets)
 
     private var counter = 0
     private var enemyCount = 0
@@ -44,11 +45,8 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
         bgm.isLooping = true
         bgm.play()
 
-        ObjectMgr.assets = game.assets
-        ObjectMgr.init()
-
         stage.addActor(bg)
-        stage.addActor(ObjectMgr)
+        stage.addActor(mgr)
 
         createExitButton()
     }
@@ -62,9 +60,9 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
     private fun draw()
     {
         batch.begin()
-        font.draw(batch, "スコア: ${ObjectMgr.score}", 30f, 100f, WIDTH - 60, Align.left, true)
-        font.draw(batch, "ライフ: ${ObjectMgr.life}", 30f, 100f, WIDTH - 60, Align.right, true)
-        if (ObjectMgr.isGameOver)
+        font.draw(batch, "スコア: ${mgr.score}", 30f, 100f, WIDTH - 60, Align.left, true)
+        font.draw(batch, "ライフ: ${mgr.life}", 30f, 100f, WIDTH - 60, Align.right, true)
+        if (mgr.isGameOver)
             font.draw(batch, "ゲームオーバー", 0f, 1280f, WIDTH, Align.center, true)
         batch.end()
 
@@ -75,25 +73,25 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
     {
         stage.act(delta)
 
-        if (!ObjectMgr.isGameOver && Gdx.input.isTouched && counter % 5 == 0)
+        if (!mgr.isGameOver && Gdx.input.isTouched && counter % 5 == 0)
         {
-            ObjectMgr.newBullet(ObjectMgr.player.x, ObjectMgr.player.y + 128)
-            ObjectMgr.newBullet(ObjectMgr.player.x - 25, ObjectMgr.player.y + 108)
-            ObjectMgr.newBullet(ObjectMgr.player.x + 25, ObjectMgr.player.y + 108)
+            mgr.newBullet(mgr.player.x, mgr.player.y + 128)
+            mgr.newBullet(mgr.player.x - 25, mgr.player.y + 108)
+            mgr.newBullet(mgr.player.x + 25, mgr.player.y + 108)
             bulletSe.play()
         }
 
-        if (!ObjectMgr.bossBattle)
+        if (!mgr.bossBattle)
         {
             if (enemyCount > level * 10)
             {
-                ObjectMgr.bossBattle = true
+                mgr.bossBattle = true
                 level++
                 println("level: $level")
             }
             else if (counter % maxOf(150 - level * 10, 50) == 0)
             {
-                ObjectMgr.newEnemy(MathUtils.random(100, (WIDTH - 100).toInt()).toFloat(), HEIGHT + 200)
+                mgr.newEnemy(MathUtils.random(100, (WIDTH - 100).toInt()).toFloat(), HEIGHT + 200)
                 enemyCount++
             }
         }
@@ -116,7 +114,7 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
         stage.dispose()
         batch.dispose()
         bg.dispose()
-        ObjectMgr.dispose()
+        mgr.dispose()
         game.assets.unload("play")
     }
 

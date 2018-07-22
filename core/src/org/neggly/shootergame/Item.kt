@@ -7,7 +7,9 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions
 
 class Item(texture: Texture) : GameObject(texture)
 {
-    var pos = Vector2()
+    private val mgr by lazy { parent as ObjectMgr }
+
+    private var pos = Vector2()
 
     var approaching = false
 
@@ -29,12 +31,12 @@ class Item(texture: Texture) : GameObject(texture)
     {
         super.act(delta)
 
-        if (!ObjectMgr.isGameOver && ObjectMgr.player.y > 2000)
+        if (!mgr.isGameOver && mgr.player.y > 2000)
             approaching = true
 
         if (approaching)
         {
-            if (ObjectMgr.isGameOver)
+            if (mgr.isGameOver)
             {
                 approaching = false
                 val down = Actions.moveBy(0f, -600f, 1.5f)
@@ -55,7 +57,7 @@ class Item(texture: Texture) : GameObject(texture)
             pos.x = x
             pos.y = y
         }
-        pos.lerp(Vector2(ObjectMgr.player.x, ObjectMgr.player.y), .25f)
+        pos.lerp(Vector2(mgr.player.x, mgr.player.y), .25f)
         setPosition(pos.x, pos.y)
     }
 }

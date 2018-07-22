@@ -6,21 +6,18 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Group
 
 /**
- * すべてのゲームオブジェクトのインスタンスを保有・管理するオブジェクト.
+ * すべてのゲームオブジェクトのインスタンスを保有・管理するクラス.
  *
  * @author negset
  */
-object ObjectMgr : Group()
+class ObjectMgr(assets: AssetsLoader) : Group()
 {
-    lateinit var assets: AssetsLoader
-
-    lateinit var player: Player
-        private set
-    private lateinit var boss: Boss
-    private lateinit var enemies: Array<Enemy>
-    private lateinit var bullets: Array<Bullet>
-    private lateinit var shots: Array<Shot>
-    private lateinit var items: Array<Item>
+    val player = Player(assets.get("player.png") as Texture)
+    private val boss = Boss(assets.get("boss.png") as Texture)
+    private val enemies = Array(20) { Enemy(assets.get("enemy.png") as Texture) }
+    private val bullets = Array(50) { Bullet(assets.get("bullet.png") as Texture) }
+    private val shots = Array(500) { Shot(assets.get("shot.png") as Texture) }
+    private val items = Array(20) { Item(assets.get("item.png") as Texture) }
 
     /** スコア */
     var score = 0
@@ -31,23 +28,8 @@ object ObjectMgr : Group()
     /** ボス戦中か否か */
     var bossBattle = false
 
-    /**
-     * 初期化処理を行う.
-     */
-    fun init()
+    init
     {
-        score = 0
-        life = 3
-        isGameOver = false
-        bossBattle = false
-
-        player = Player(assets.get("player.png") as Texture)
-        boss = Boss(assets.get("boss.png") as Texture)
-        enemies = Array(20) { Enemy(assets.get("enemy.png") as Texture) }
-        bullets = Array(50) { Bullet(assets.get("bullet.png") as Texture) }
-        shots = Array(500) { Shot(assets.get("shot.png") as Texture) }
-        items = Array(20) { Item(assets.get("item.png") as Texture) }
-
         addActor(player)
     }
 
@@ -224,7 +206,7 @@ object ObjectMgr : Group()
         addActor(item)
     }
 
-    fun getAngle(obj1: GameObject, obj2: GameObject): Float
+    private fun getAngle(obj1: GameObject, obj2: GameObject): Float
     {
         val v1 = Vector2(obj1.x, obj1.y)
         val v2 = Vector2(obj2.x, obj2.y)
@@ -237,7 +219,7 @@ object ObjectMgr : Group()
         return getAngle(obj, player)
     }
 
-    fun addLife(value: Int)
+    private fun addLife(value: Int)
     {
         life += value
         if (life <= 0)
@@ -247,7 +229,7 @@ object ObjectMgr : Group()
         }
     }
 
-    fun hasEnemy(): Boolean
+    private fun hasEnemy(): Boolean
     {
         return enemies.any { it.hasParent() }
     }
