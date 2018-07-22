@@ -35,7 +35,7 @@ class TitleScreen(game: ShooterGame) : ScreenAdapter(game)
         btnBgTex.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
         val btnBg = NinePatch(btnBgTex, 64, 64, 64, 64)
 
-        playBtn.also {
+        playBtn.let {
             it.bg = btnBg
             it.font = font
             it.text = "はじめる"
@@ -44,7 +44,7 @@ class TitleScreen(game: ShooterGame) : ScreenAdapter(game)
             it.setSize(500f, 180f)
         }
 
-        creditsBtn.also {
+        creditsBtn.let {
             it.bg = btnBg
             it.font = font
             it.text = "クレジット"
