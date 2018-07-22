@@ -29,7 +29,7 @@ class CreditsScreen(game: ShooterGame) : ScreenAdapter(game)
         val btnBgTex = game.assets.get("button_bg.png") as Texture
         btnBgTex.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
         val btnBg = NinePatch(btnBgTex, 64, 64, 64, 64)
-        titleBtn.also {
+        titleBtn.let {
             it.bg = btnBg
             it.font = font
             it.text = "もどる"
