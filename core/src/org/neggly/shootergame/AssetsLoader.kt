@@ -9,13 +9,14 @@ class AssetsLoader(private val xmlPath: String)
 {
     val manager = AssetManager()
 
+    private val root by lazy { XmlReader().parse(Gdx.files.internal(xmlPath)) }
+
     fun update() = manager.update()
 
     fun dispose() = manager.dispose()
 
     fun load(sceneId: String)
     {
-        val root = XmlReader().parse(Gdx.files.internal(xmlPath))
         val scene = root.getChildrenByName("scene")
                 .find { it.getAttribute("id") == sceneId } ?: return
         for (asset in scene.getChildrenByName("asset"))
@@ -36,7 +37,6 @@ class AssetsLoader(private val xmlPath: String)
 
     fun unload(sceneId: String)
     {
-        val root = XmlReader().parse(Gdx.files.internal(xmlPath))
         val scene = root.getChildrenByName("scene")
                 .find { it.getAttribute("id") == sceneId } ?: return
         for (asset in scene.getChildrenByName("asset"))
