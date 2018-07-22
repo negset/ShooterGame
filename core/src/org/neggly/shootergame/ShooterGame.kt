@@ -69,7 +69,7 @@ class ShooterGame : Game()
         else
             loading.render()
 
-        fpsLogger.log()
+        //fpsLogger.log()
     }
 
     override fun dispose()
