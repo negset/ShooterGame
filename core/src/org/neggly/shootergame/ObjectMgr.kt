@@ -186,7 +186,7 @@ object ObjectMgr : Group()
      */
     fun newBullet(x: Float, y: Float)
     {
-        val bullet = bullets.filterNot { it.hasParent() }.first()
+        val bullet = bullets.find { !it.hasParent() } ?: return
         bullet.activate(x, y)
         addActor(bullet)
     }
@@ -197,7 +197,7 @@ object ObjectMgr : Group()
      */
     fun newShot(x: Float, y: Float, deg: Float)
     {
-        val shot = shots.filterNot { it.hasParent() }.first()
+        val shot = shots.find { !it.hasParent() } ?: return
         shot.activate(x, y, deg)
         addActor(shot)
     }
@@ -208,7 +208,7 @@ object ObjectMgr : Group()
      */
     fun newEnemy(x: Float, y: Float)
     {
-        val enemy = enemies.filterNot { it.hasParent() }.first()
+        val enemy = enemies.find { !it.hasParent() } ?: return
         enemy.activate(x, y)
         addActor(enemy)
     }
@@ -219,7 +219,7 @@ object ObjectMgr : Group()
      */
     fun newItem(x: Float, y: Float)
     {
-        val item = items.filterNot { it.hasParent() }.first()
+        val item = items.find { !it.hasParent() } ?: return
         item.activate(x, y)
         addActor(item)
     }
