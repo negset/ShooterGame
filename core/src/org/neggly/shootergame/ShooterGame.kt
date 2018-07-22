@@ -58,7 +58,7 @@ class ShooterGame : Game()
 
         if (assets.update())
         {
-            // nextScreenがセットされていたら,スクリーンを切り替え,nullに戻す.
+            /* nextScreenがセットされていたら,スクリーンを切り替え,nullに戻す. */
             nextScreen?.let {
                 setScreen(it.newScreen(this))
                 nextScreen = null
