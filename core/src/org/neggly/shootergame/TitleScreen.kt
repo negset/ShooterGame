@@ -70,11 +70,11 @@ class TitleScreen(game: ShooterGame) : ScreenAdapter(game)
 
         if (playBtn.isClicked())
         {
-            game.nextScreen = ShooterGame.Screens.PLAY
+            game.nextScreen = ScreenState.PLAY
         }
         else if (creditsBtn.isClicked())
         {
-            game.nextScreen = ShooterGame.Screens.CREDITS
+            game.nextScreen = ScreenState.CREDITS
         }
     }
 

@@ -58,7 +58,7 @@ class CreditsScreen(game: ShooterGame) : ScreenAdapter(game)
         stage.act(delta)
 
         if (titleBtn.isClicked())
-            game.nextScreen = ShooterGame.Screens.TITLE
+            game.nextScreen = ScreenState.TITLE
     }
 
     private fun draw()

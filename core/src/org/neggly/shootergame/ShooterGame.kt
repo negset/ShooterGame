@@ -22,19 +22,11 @@ const val HEIGHT = 2560f
  */
 class ShooterGame : Game()
 {
-    var nextScreen = Screens.UNSET
+    var nextScreen: ScreenState? = null
         set (value)
         {
-            when (value)
-            {
-                Screens.TITLE -> "title"
-                Screens.PLAY -> "play"
-                Screens.CREDITS -> "credits"
-                Screens.UNSET -> null
-            }?.let {
-                assets.load(it)
-            }
             field = value
+            field?.let { assets.load(it.assetsSceneId) }
         }
 
     val assets = AssetsLoader("assets.xml")
@@ -50,21 +42,13 @@ class ShooterGame : Game()
      */
     private val fpsLogger = FPSLogger()
 
-    enum class Screens
-    {
-        TITLE,
-        PLAY,
-        CREDITS,
-        UNSET
-    }
-
     override fun create()
     {
         loadFont()
 
         assets.load("common")
 
-        nextScreen = Screens.TITLE
+        nextScreen = ScreenState.TITLE
     }
 
     override fun render()
@@ -74,14 +58,11 @@ class ShooterGame : Game()
 
         if (assets.update())
         {
-            when (nextScreen)
-            {
-                Screens.TITLE -> TitleScreen(this)
-                Screens.PLAY -> PlayScreen(this)
-                Screens.CREDITS -> CreditsScreen(this)
-                Screens.UNSET -> null
-            }?.let { setScreen(it) }
-            nextScreen = Screens.UNSET
+            // nextScreenがセットされていたら,スクリーンを切り替え,nullに戻す.
+            nextScreen?.let {
+                setScreen(it.newScreen(this))
+                nextScreen = null
+            }
 
             super.render()
         }
