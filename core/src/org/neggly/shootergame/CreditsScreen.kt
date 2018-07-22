@@ -21,11 +21,6 @@ class CreditsScreen(game: ShooterGame) : ScreenAdapter(game)
 
     private val titleBtn = TextButton()
 
-    override fun load()
-    {
-        game.assets.load("credits")
-    }
-
     override fun show()
     {
         Gdx.input.inputProcessor = stage
