@@ -1,6 +1,5 @@
 package org.neggly.shootergame
 
-import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
@@ -17,8 +16,7 @@ object ObjectMgr : Group()
 
     lateinit var player: Player
         private set
-    lateinit var boss: Boss
-        private set
+    private lateinit var boss: Boss
     private lateinit var enemies: Array<Enemy>
     private lateinit var bullets: Array<Bullet>
     private lateinit var shots: Array<Shot>
