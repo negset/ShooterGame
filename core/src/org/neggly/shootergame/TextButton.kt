@@ -12,13 +12,8 @@ import com.badlogic.gdx.utils.Align
 class TextButton : Actor()
 {
     var bg: NinePatch? = null
-    var offset = 0f
     var font: BitmapFont? = null
-        set(value)
-        {
-            field = value
-            offset = (field?.xHeight ?: 0f) / 2
-        }
+    var offset = 0f
     var text: String = ""
 
     private val bounds = Rectangle()
