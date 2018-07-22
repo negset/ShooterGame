@@ -2,7 +2,6 @@ package org.neggly.shootergame
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
-import com.badlogic.gdx.utils.GdxRuntimeException
 import com.badlogic.gdx.utils.XmlReader
 
 class AssetsLoader(private val xmlPath: String)
