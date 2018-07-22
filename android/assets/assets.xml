@@ -25,5 +25,4 @@
   <scene id="credits">
     <asset path="bg_star.png" class="com.badlogic.gdx.graphics.Texture" />
   </scene>
-  
 </assets-list>
