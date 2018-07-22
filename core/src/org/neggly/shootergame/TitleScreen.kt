@@ -40,6 +40,7 @@ class TitleScreen(game: ShooterGame) : ScreenAdapter(game)
             it.font = font
             it.text = "はじめる"
             it.offset = 30f
+            it.clickEvent = { game.nextScreen = ScreenState.PLAY }
             it.setPosition(WIDTH / 2, 1050f)
             it.setSize(500f, 180f)
         }
@@ -49,6 +50,7 @@ class TitleScreen(game: ShooterGame) : ScreenAdapter(game)
             it.font = font
             it.text = "クレジット"
             it.offset = 30f
+            it.clickEvent = { game.nextScreen = ScreenState.CREDITS }
             it.setPosition(WIDTH / 2, 750f)
             it.setSize(500f, 180f)
         }
@@ -67,15 +69,6 @@ class TitleScreen(game: ShooterGame) : ScreenAdapter(game)
     private fun update(delta: Float)
     {
         stage.act(delta)
-
-        if (playBtn.isClicked())
-        {
-            game.nextScreen = ScreenState.PLAY
-        }
-        else if (creditsBtn.isClicked())
-        {
-            game.nextScreen = ScreenState.CREDITS
-        }
     }
 
     private fun draw()

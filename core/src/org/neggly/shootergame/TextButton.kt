@@ -15,6 +15,7 @@ class TextButton : Actor()
     var font: BitmapFont? = null
     var offset = 0f
     var text: String = ""
+    var clickEvent = {}
 
     private val bounds = Rectangle()
 
@@ -25,6 +26,14 @@ class TextButton : Actor()
         batch.setColor(color.r, color.g, color.b, color.a * parentAlpha)
         bg?.draw(batch, x - width / 2, y - height / 2, width, height)
         font?.draw(batch, text, 0f, y + offset, WIDTH, Align.center, true)
+    }
+
+    override fun act(delta: Float)
+    {
+        super.act(delta)
+
+        if (isClicked())
+            clickEvent()
     }
 
     fun isClicked(): Boolean
