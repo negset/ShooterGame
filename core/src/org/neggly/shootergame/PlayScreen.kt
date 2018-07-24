@@ -131,7 +131,7 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
         {
             override fun clicked(event: InputEvent, x: Float, y: Float)
             {
-                game.nextScreen = ScreenState.TITLE
+                game.nextScreen = ScreenId.TITLE
             }
         }
         image.addListener(listener)

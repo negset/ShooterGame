@@ -34,7 +34,7 @@ class CreditsScreen(game: ShooterGame) : ScreenAdapter(game)
             it.font = font
             it.text = "もどる"
             it.offset = 30f
-            it.clickEvent = { game.nextScreen = ScreenState.TITLE }
+            it.clickEvent = { game.nextScreen = ScreenId.TITLE }
             it.setPosition(WIDTH / 2, 450f)
             it.setSize(500f, 180f)
         }

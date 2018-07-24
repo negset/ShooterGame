@@ -22,11 +22,11 @@ const val HEIGHT = 2560f
  */
 class ShooterGame : Game()
 {
-    var nextScreen: ScreenState? = null
+    var nextScreen: ScreenId? = null
         set (value)
         {
             field = value
-            field?.let { asset.load(it.assetsSceneId) }
+            field?.let { asset.load(it.assetSceneId) }
         }
 
     val asset = AssetLoader("assets.xml")
@@ -48,7 +48,7 @@ class ShooterGame : Game()
 
         asset.load("common")
 
-        nextScreen = ScreenState.TITLE
+        nextScreen = ScreenId.TITLE
     }
 
     override fun render()

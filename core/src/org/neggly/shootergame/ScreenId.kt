@@ -1,24 +1,24 @@
 package org.neggly.shootergame
 
-enum class ScreenState
+enum class ScreenId
 {
     TITLE
     {
-        override val assetsSceneId = "title"
+        override val assetSceneId = "title"
         override fun newScreen(game: ShooterGame) = TitleScreen(game)
     },
     PLAY
     {
-        override val assetsSceneId = "play"
+        override val assetSceneId = "play"
         override fun newScreen(game: ShooterGame) = PlayScreen(game)
     },
     CREDITS
     {
-        override val assetsSceneId = "credits"
+        override val assetSceneId = "credits"
         override fun newScreen(game: ShooterGame) = CreditsScreen(game)
     };
 
-    abstract val assetsSceneId: String
+    abstract val assetSceneId: String
 
     abstract fun newScreen(game: ShooterGame): ScreenAdapter
 }
