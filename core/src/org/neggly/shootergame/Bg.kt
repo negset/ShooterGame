@@ -11,10 +11,10 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions
  *
  * @author negset
  */
-class Bg(assets: AssetsLoader) : Group()
+class Bg(asset: AssetLoader) : Group()
 {
     private val stars = Array(30) {
-        Star(assets.get("bg_star.png") as Texture,
+        Star(asset.get("bg_star.png") as Texture,
                 WIDTH * Math.random().toFloat(),
                 HEIGHT * Math.random().toFloat())
     }

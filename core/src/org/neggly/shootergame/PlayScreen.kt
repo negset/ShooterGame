@@ -24,18 +24,18 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
     private val stage = Stage(FitViewport(WIDTH, HEIGHT))
     private val batch = SpriteBatch()
 
-    private val font = game.assets.get("font.ttf") as BitmapFont
+    private val font = game.asset.get("font.ttf") as BitmapFont
 
-    private val bg = Bg(game.assets)
-    private val mgr = ObjectMgr(game.assets)
+    private val bg = Bg(game.asset)
+    private val mgr = ObjectMgr(game.asset)
 
     private var counter = 0
     private var enemyCount = 0
 
     private var level = 1
 
-    private val bulletSe = game.assets.get("bullet_se.wav") as Sound
-    private val bgm = game.assets.get("bgm.mp3") as Music
+    private val bulletSe = game.asset.get("bullet_se.wav") as Sound
+    private val bgm = game.asset.get("bgm.mp3") as Music
 
     override fun show()
     {
@@ -115,7 +115,7 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
         batch.dispose()
         bg.dispose()
         mgr.dispose()
-        game.assets.unload("play")
+        game.asset.unload("play")
     }
 
     /**

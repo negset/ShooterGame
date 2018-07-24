@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<assets-list>
+<asset-list>
   <scene id="common">
     <asset path="button_bg.png" class="com.badlogic.gdx.graphics.Texture" />
     <asset manual-load="true" path="font.ttf" class="com.badlogic.gdx.graphics.g2d.BitmapFont" />
@@ -25,4 +25,4 @@
   <scene id="credits">
     <asset path="bg_star.png" class="com.badlogic.gdx.graphics.Texture" />
   </scene>
-</assets-list>
+</asset-list>

@@ -10,14 +10,14 @@ import com.badlogic.gdx.scenes.scene2d.Group
  *
  * @author negset
  */
-class ObjectMgr(assets: AssetsLoader) : Group()
+class ObjectMgr(asset: AssetLoader) : Group()
 {
-    val player = Player(assets.get("player.png") as Texture)
-    private val boss = Boss(assets.get("boss.png") as Texture)
-    private val enemies = Array(20) { Enemy(assets.get("enemy.png") as Texture) }
-    private val bullets = Array(50) { Bullet(assets.get("bullet.png") as Texture) }
-    private val shots = Array(500) { Shot(assets.get("shot.png") as Texture) }
-    private val items = Array(20) { Item(assets.get("item.png") as Texture) }
+    val player = Player(asset.get("player.png") as Texture)
+    private val boss = Boss(asset.get("boss.png") as Texture)
+    private val enemies = Array(20) { Enemy(asset.get("enemy.png") as Texture) }
+    private val bullets = Array(50) { Bullet(asset.get("bullet.png") as Texture) }
+    private val shots = Array(500) { Shot(asset.get("shot.png") as Texture) }
+    private val items = Array(20) { Item(asset.get("item.png") as Texture) }
 
     /** スコア */
     var score = 0

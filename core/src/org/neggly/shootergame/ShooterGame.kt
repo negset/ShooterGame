@@ -26,10 +26,10 @@ class ShooterGame : Game()
         set (value)
         {
             field = value
-            field?.let { assets.load(it.assetsSceneId) }
+            field?.let { asset.load(it.assetsSceneId) }
         }
 
-    val assets = AssetsLoader("assets.xml")
+    val asset = AssetLoader("assets.xml")
 
     /**
      * ロード画面.
@@ -46,7 +46,7 @@ class ShooterGame : Game()
     {
         loadFont()
 
-        assets.load("common")
+        asset.load("common")
 
         nextScreen = ScreenState.TITLE
     }
@@ -56,7 +56,7 @@ class ShooterGame : Game()
         Gdx.gl.glClearColor(0f, 0f, 0.30f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
-        if (assets.update())
+        if (asset.update())
         {
             /* nextScreenがセットされていたら,スクリーンを切り替え,nullに戻す. */
             nextScreen?.let {
@@ -75,8 +75,8 @@ class ShooterGame : Game()
     override fun dispose()
     {
         super.dispose()
-        assets.unload("common")
-        assets.dispose()
+        asset.unload("common")
+        asset.dispose()
         loading.dispose()
     }
 
@@ -96,7 +96,7 @@ class ShooterGame : Game()
             fontParameters.minFilter = Texture.TextureFilter.Linear
             fontParameters.incremental = true
         }
-        assets.manager.apply {
+        asset.manager.apply {
             setLoader(FreeTypeFontGenerator::class.java, FreeTypeFontGeneratorLoader(resolver))
             setLoader(BitmapFont::class.java, ".ttf", FreetypeFontLoader(resolver))
             load("font.ttf", BitmapFont::class.java, param)

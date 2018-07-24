@@ -14,9 +14,9 @@ class TitleScreen(game: ShooterGame) : ScreenAdapter(game)
     private val stage = Stage(FitViewport(WIDTH, HEIGHT))
     private val batch = SpriteBatch()
 
-    private val font = game.assets.get("font.ttf") as BitmapFont
+    private val font = game.asset.get("font.ttf") as BitmapFont
 
-    private val bg = Bg(game.assets)
+    private val bg = Bg(game.asset)
 
     private val playBtn = TextButton()
     private val creditsBtn = TextButton()
@@ -26,7 +26,7 @@ class TitleScreen(game: ShooterGame) : ScreenAdapter(game)
         Gdx.input.inputProcessor = stage
         batch.projectionMatrix = stage.camera.combined
 
-        val btnBgTex = game.assets.get("button_bg.png") as Texture
+        val btnBgTex = game.asset.get("button_bg.png") as Texture
         btnBgTex.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
         val btnBg = NinePatch(btnBgTex, 64, 64, 64, 64)
 
@@ -91,6 +91,6 @@ class TitleScreen(game: ShooterGame) : ScreenAdapter(game)
         stage.dispose()
         batch.dispose()
         bg.dispose()
-        game.assets.unload("title")
+        game.asset.unload("title")
     }
 }
