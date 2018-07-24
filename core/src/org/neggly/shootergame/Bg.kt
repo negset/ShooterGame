@@ -2,6 +2,7 @@ package org.neggly.shootergame
 
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Group
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
@@ -15,8 +16,7 @@ class Bg(asset: AssetLoader) : Group()
 {
     private val stars = Array(30) {
         Star(asset.get("bg_star.png") as Texture,
-                WIDTH * Math.random().toFloat(),
-                HEIGHT * Math.random().toFloat())
+                MathUtils.random(WIDTH), MathUtils.random(HEIGHT))
     }
 
     init
