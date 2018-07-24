@@ -14,6 +14,8 @@ class AssetLoader(private val xmlPath: String)
 
     fun dispose() = manager.dispose()
 
+    fun get(name: String): Any = manager.get(name)
+
     fun load(sceneId: String)
     {
         val scene = root.getChildrenByName("scene")
@@ -27,11 +29,6 @@ class AssetLoader(private val xmlPath: String)
                 manager.load(path, Class.forName(className))
             }
         }
-    }
-
-    fun get(name: String): Any
-    {
-        return manager.get(name)
     }
 
     fun unload(sceneId: String)
