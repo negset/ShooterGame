@@ -48,14 +48,4 @@ open class GameObject(private val texture: Texture) : Actor()
     {
         remove()
     }
-
-    /**
-     * 描画時の透明度を設定する.
-     *
-     * @param alpha 透明度(0f~1f)
-     */
-    fun setAlpha(alpha: Float)
-    {
-        color.a = alpha
-    }
 }

@@ -63,23 +63,19 @@ class Player(texture: Texture) : GameObject(texture)
 
         if (isInvincible)
         {
-            if (invincibleCounter % 10 < 5)
-                setAlpha(0f)
-            else
-                setAlpha(1f)
+            color.a = if (invincibleCounter % 10 < 5) 0f else 1f
             if (++invincibleCounter > 200)
             {
-                setAlpha(1f)
+                color.a = 1f
                 invincibleCounter = 0
                 isInvincible = false
             }
         }
-
-        itemApproachBounds.setPosition(x, y)
     }
 
     override fun positionChanged()
     {
         bounds.setPosition(x, y)
+        itemApproachBounds.setPosition(x, y)
     }
 }
