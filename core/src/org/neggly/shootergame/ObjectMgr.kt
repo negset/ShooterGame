@@ -27,6 +27,9 @@ class ObjectMgr(asset: AssetLoader) : Group()
     var isGameOver = false
     /** ボス戦中か否か */
     var bossBattle = false
+        private set
+    /** ボス戦待ち状態か否か */
+    var waitForBoss = false
 
     init
     {
@@ -39,19 +42,25 @@ class ObjectMgr(asset: AssetLoader) : Group()
 
         if (bossBattle)
         {
-            if (!hasEnemy() && !boss.hasParent())
-            {
-                boss.activate(WIDTH / 2, HEIGHT + 200)
-                addActor(boss)
-            }
             collisionDetectBulletAndBoss()
             collisionDetectionPlayerAndBoss()
         }
+        else
+        {
+            collisionDetectionBulletAndEnemy()
+            collisionDetectionPlayerAndEnemy()
 
-        collisionDetectionBulletAndEnemy()
-        collisionDetectionPlayerAndEnemy()
+            if (waitForBoss && !hasEnemy())
+            {
+                boss.activate(WIDTH / 2, HEIGHT + 200)
+                addActor(boss)
+                bossBattle = true
+                waitForBoss = false
+            }
+        }
+
         collisionDetectionShotAndPlayer()
-        collisionDetectionItemToPlayer()
+        collisionDetectionItemAndPlayer()
     }
 
     /**
@@ -144,7 +153,7 @@ class ObjectMgr(asset: AssetLoader) : Group()
     /**
      * 自機とアイテムの衝突判定を行う.
      */
-    private fun collisionDetectionItemToPlayer()
+    private fun collisionDetectionItemAndPlayer()
     {
         if (isGameOver) return
         for (item in items.filter { it.hasParent() })

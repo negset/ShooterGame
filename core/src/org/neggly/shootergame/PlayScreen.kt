@@ -81,18 +81,18 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
             bulletSe.play()
         }
 
-        if (!mgr.bossBattle)
+        if (!mgr.bossBattle && !mgr.waitForBoss)
         {
-            if (enemyCount > level * 10)
+            if (counter % maxOf(150 - level * 10, 50) == 0)
             {
-                mgr.bossBattle = true
-                level++
-                println("level: $level")
-            }
-            else if (counter % maxOf(150 - level * 10, 50) == 0)
-            {
-                mgr.newEnemy(MathUtils.random(100, (WIDTH - 100).toInt()).toFloat(), HEIGHT + 200)
-                enemyCount++
+                mgr.newEnemy(MathUtils.random(100f, WIDTH - 100), HEIGHT + 200)
+
+                if (++enemyCount > level * 10)
+                {
+                    mgr.waitForBoss = true
+                    level++
+                    println("level up: $level")
+                }
             }
         }
 
