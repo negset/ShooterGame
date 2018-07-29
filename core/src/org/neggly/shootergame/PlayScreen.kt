@@ -122,7 +122,7 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
      */
     private fun createExitButton()
     {
-        val texture = Texture("exit.png")
+        val texture = game.asset.get("exit.png") as Texture
         texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
         val image = Image(texture)
         image.setPosition(WIDTH - 100, HEIGHT - 100)
