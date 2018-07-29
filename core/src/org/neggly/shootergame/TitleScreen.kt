@@ -26,29 +26,7 @@ class TitleScreen(game: ShooterGame) : ScreenAdapter(game)
         Gdx.input.inputProcessor = stage
         batch.projectionMatrix = stage.camera.combined
 
-        val btnBgTex = game.asset.get("button_bg.png") as Texture
-        btnBgTex.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
-        val btnBg = NinePatch(btnBgTex, 64, 64, 64, 64)
-
-        playBtn.let {
-            it.bg = btnBg
-            it.font = font
-            it.text = "はじめる"
-            it.offset = 30f
-            it.clickEvent = { game.nextScreen = ScreenId.PLAY }
-            it.setPosition(WIDTH / 2, 1050f)
-            it.setSize(500f, 180f)
-        }
-
-        creditsBtn.let {
-            it.bg = btnBg
-            it.font = font
-            it.text = "クレジット"
-            it.offset = 30f
-            it.clickEvent = { game.nextScreen = ScreenId.CREDITS }
-            it.setPosition(WIDTH / 2, 750f)
-            it.setSize(500f, 180f)
-        }
+        setupButtons()
 
         stage.addActor(bg)
         stage.addActor(playBtn)
@@ -92,5 +70,38 @@ class TitleScreen(game: ShooterGame) : ScreenAdapter(game)
         batch.dispose()
         bg.dispose()
         game.asset.unload("title")
+    }
+
+    private fun setupButtons()
+    {
+        val btnBgTex = game.asset.get("button_bg.png") as Texture
+        btnBgTex.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
+        val btnBg = NinePatch(btnBgTex, 64, 64, 64, 64)
+
+        playBtn.let {
+            it.bg = btnBg
+            it.font = font
+            it.text = "はじめる"
+            it.offset = 30f
+            it.clickEvent = {
+                Gdx.input.vibrate(30)
+                game.nextScreen = ScreenId.PLAY
+            }
+            it.setPosition(WIDTH / 2, 1050f)
+            it.setSize(500f, 180f)
+        }
+
+        creditsBtn.let {
+            it.bg = btnBg
+            it.font = font
+            it.text = "クレジット"
+            it.offset = 30f
+            it.clickEvent = {
+                Gdx.input.vibrate(30)
+                game.nextScreen = ScreenId.CREDITS
+            }
+            it.setPosition(WIDTH / 2, 750f)
+            it.setSize(500f, 180f)
+        }
     }
 }

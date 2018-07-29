@@ -130,6 +130,7 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
         {
             override fun clicked(event: InputEvent, x: Float, y: Float)
             {
+                Gdx.input.vibrate(30)
                 game.nextScreen = ScreenId.TITLE
             }
         }

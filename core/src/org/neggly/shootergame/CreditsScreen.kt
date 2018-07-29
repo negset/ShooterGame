@@ -26,18 +26,7 @@ class CreditsScreen(game: ShooterGame) : ScreenAdapter(game)
         Gdx.input.inputProcessor = stage
         batch.projectionMatrix = stage.camera.combined
 
-        val btnBgTex = game.asset.get("button_bg.png") as Texture
-        btnBgTex.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
-        val btnBg = NinePatch(btnBgTex, 64, 64, 64, 64)
-        titleBtn.let {
-            it.bg = btnBg
-            it.font = font
-            it.text = "もどる"
-            it.offset = 30f
-            it.clickEvent = { game.nextScreen = ScreenId.TITLE }
-            it.setPosition(WIDTH / 2, 450f)
-            it.setSize(500f, 180f)
-        }
+        setupButtons()
 
         stage.addActor(bg)
         stage.addActor(titleBtn)
@@ -85,5 +74,25 @@ class CreditsScreen(game: ShooterGame) : ScreenAdapter(game)
         batch.dispose()
         bg.dispose()
         game.asset.unload("credits")
+    }
+
+    private fun setupButtons()
+    {
+        val btnBgTex = game.asset.get("button_bg.png") as Texture
+        btnBgTex.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
+        val btnBg = NinePatch(btnBgTex, 64, 64, 64, 64)
+
+        titleBtn.let {
+            it.bg = btnBg
+            it.font = font
+            it.text = "もどる"
+            it.offset = 30f
+            it.clickEvent = {
+                Gdx.input.vibrate(30)
+                game.nextScreen = ScreenId.TITLE
+            }
+            it.setPosition(WIDTH / 2, 450f)
+            it.setSize(500f, 180f)
+        }
     }
 }
