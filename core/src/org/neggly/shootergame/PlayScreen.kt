@@ -83,15 +83,14 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
 
         if (!mgr.bossBattle && !mgr.waitForBoss)
         {
-            if (counter % maxOf(150 - level * 10, 50) == 0)
+            if (counter % (150 - level * 10) == 0)
             {
                 mgr.newEnemy(MathUtils.random(100f, WIDTH - 100), HEIGHT + 200)
 
-                if (++enemyCount > level * 10)
+                if (++enemyCount >= level * (level + 21) / 2)
                 {
                     mgr.waitForBoss = true
-                    level++
-                    println("level up: $level")
+                    if (level < 10) level++
                 }
             }
         }
