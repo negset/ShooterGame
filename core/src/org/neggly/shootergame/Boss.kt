@@ -89,6 +89,7 @@ class Boss(texture: Texture) : GameObject(texture)
             mgr.newItem(x, y + 36)
             mgr.newItem(x - 48, y - 36)
             mgr.newItem(x + 48, y - 36)
+            mgr.explosionSe.play()
             deactivate()
         }
 

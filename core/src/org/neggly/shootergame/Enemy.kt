@@ -69,6 +69,7 @@ class Enemy(texture: Texture) : GameObject(texture)
         {
             mgr.score += 300
             mgr.newItem(x, y)
+            mgr.explosionSe.play()
             deactivate()
         }
 
@@ -113,6 +114,7 @@ class Enemy(texture: Texture) : GameObject(texture)
             mgr.newShot(x, y, shootAngle - 20f)
             mgr.newShot(x, y, shootAngle)
             mgr.newShot(x, y, shootAngle + 20f)
+            mgr.shotSe.play()
             shootCount++
         }
 
@@ -134,6 +136,7 @@ class Enemy(texture: Texture) : GameObject(texture)
             mgr.newShot(x, y, shootAngle - 120)
             mgr.newShot(x, y, shootAngle)
             mgr.newShot(x, y, shootAngle + 120)
+            mgr.shotSe.play()
             shootAngle += 20
             shootCount++
         }
