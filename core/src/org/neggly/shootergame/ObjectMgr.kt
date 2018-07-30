@@ -21,20 +21,16 @@ class ObjectMgr(asset: AssetLoader) : Group()
     private val items = Array(20) { Item(asset.get("item.png") as Texture) }
 
     val bulletSe = asset.get("bullet_se.wav") as Sound
+    val explosionSe = asset.get("explosion_se.wav") as Sound
+    val itemCatchSe = asset.get("item_catch_se.wav") as Sound
+    val playerDamageSe = asset.get("player_damage_se.wav") as Sound
+    val shotSe = asset.get("shot_se.wav") as Sound
 
     /** スコア */
     var score = 0
     /** 残機 */
     var life = 3
-        private set(value)
-        {
-            field = value
-            if (life <= 0)
-            {
-                player.deactivate()
-                isGameOver = true
-            }
-        }
+        private set
     /** ゲームオーバーか否か */
     var isGameOver = false
         private set
@@ -123,8 +119,7 @@ class ObjectMgr(asset: AssetLoader) : Group()
         if (!boss.hasParent()) return
         if (player.bounds.overlaps(boss.bounds))
         {
-            life--
-            player.isInvincible = true
+            damagePlayer()
         }
     }
 
@@ -139,8 +134,7 @@ class ObjectMgr(asset: AssetLoader) : Group()
         {
             if (player.bounds.contains(shot.x, shot.y))
             {
-                life--
-                player.isInvincible = true
+                damagePlayer()
                 shot.deactivate()
             }
         }
@@ -157,8 +151,7 @@ class ObjectMgr(asset: AssetLoader) : Group()
         {
             if (player.bounds.overlaps(enemy.bounds))
             {
-                life--
-                player.isInvincible = true
+                damagePlayer()
             }
         }
     }
@@ -174,6 +167,7 @@ class ObjectMgr(asset: AssetLoader) : Group()
             if (player.bounds.contains(item.x, item.y))
             {
                 score += 100
+                itemCatchSe.play()
                 item.deactivate()
             }
             else if (!item.approaching
@@ -181,6 +175,21 @@ class ObjectMgr(asset: AssetLoader) : Group()
             {
                 item.approaching = true
             }
+        }
+    }
+
+    private fun damagePlayer()
+    {
+        if (--life > 0)
+        {
+            playerDamageSe.play()
+            player.isInvincible = true
+        }
+        else
+        {
+            explosionSe.play()
+            player.deactivate()
+            isGameOver = true
         }
     }
 
