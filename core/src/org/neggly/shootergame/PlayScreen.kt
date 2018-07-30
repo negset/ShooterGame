@@ -34,7 +34,6 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
     private var enemyCount = 0
     private var enemyNumUntilNextBoss = 11
 
-    private val bulletSe = game.asset.get("bullet_se.wav") as Sound
     private val bgm = game.asset.get("bgm.mp3") as Music
 
     override fun show()
@@ -72,14 +71,6 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
     private fun update(delta: Float)
     {
         stage.act(delta)
-
-        if (!mgr.isGameOver && Gdx.input.isTouched && counter % 5 == 0)
-        {
-            mgr.newBullet(mgr.player.x, mgr.player.y + 128)
-            mgr.newBullet(mgr.player.x - 25, mgr.player.y + 108)
-            mgr.newBullet(mgr.player.x + 25, mgr.player.y + 108)
-            bulletSe.play()
-        }
 
         if (!mgr.bossBattle && !mgr.waitForBoss)
         {

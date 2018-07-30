@@ -7,6 +7,10 @@ import com.badlogic.gdx.math.Vector2
 
 class Player(texture: Texture) : GameObject(texture)
 {
+    private val mgr by lazy { parent as ObjectMgr }
+
+    private var counter = 0
+
     private var baseX = 0f
     private var baseY = 0f
 
@@ -54,6 +58,14 @@ class Player(texture: Texture) : GameObject(texture)
                 else if (x > WIDTH) x = WIDTH
                 if (y < 0) y = 0f
                 else if (y > HEIGHT) y = HEIGHT
+
+                if (counter % 5 == 0)
+                {
+                    mgr.newBullet(x, y + 128)
+                    mgr.newBullet(x - 25, y + 108)
+                    mgr.newBullet(x + 25, y + 108)
+                    mgr.bulletSe.play()
+                }
             }
         }
         else
@@ -71,6 +83,8 @@ class Player(texture: Texture) : GameObject(texture)
                 isInvincible = false
             }
         }
+
+        counter++
     }
 
     override fun positionChanged()

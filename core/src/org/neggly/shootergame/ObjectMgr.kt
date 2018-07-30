@@ -1,5 +1,6 @@
 package org.neggly.shootergame
 
+import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
@@ -18,6 +19,8 @@ class ObjectMgr(asset: AssetLoader) : Group()
     private val bullets = Array(50) { Bullet(asset.get("bullet.png") as Texture) }
     private val shots = Array(500) { Shot(asset.get("shot.png") as Texture) }
     private val items = Array(20) { Item(asset.get("item.png") as Texture) }
+
+    val bulletSe = asset.get("bullet_se.wav") as Sound
 
     /** スコア */
     var score = 0
