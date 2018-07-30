@@ -239,10 +239,9 @@ class ObjectMgr(asset: AssetLoader) : Group()
 
     private fun getAngle(obj1: GameObject, obj2: GameObject): Float
     {
-        val v1 = Vector2(obj1.x, obj1.y)
-        val v2 = Vector2(obj2.x, obj2.y)
-        val v3 = v2.sub(v1)
-        return 180 - Math.toDegrees(MathUtils.atan2(v3.x, v3.y).toDouble()).toFloat()
+        val dx = obj2.x - obj1.x
+        val dy = obj2.y - obj1.y
+        return 180 - MathUtils.atan2(dx, dy) * MathUtils.radDeg
     }
 
     fun getAngleToPlayer(obj: GameObject): Float
