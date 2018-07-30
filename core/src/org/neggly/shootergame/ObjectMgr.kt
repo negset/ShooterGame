@@ -23,8 +23,18 @@ class ObjectMgr(asset: AssetLoader) : Group()
     var score = 0
     /** 残機 */
     var life = 3
+        private set(value)
+        {
+            field = value
+            if (life <= 0)
+            {
+                player.deactivate()
+                isGameOver = true
+            }
+        }
     /** ゲームオーバーか否か */
     var isGameOver = false
+        private set
     /** ボス戦中か否か */
     var bossBattle = false
         private set
@@ -110,7 +120,7 @@ class ObjectMgr(asset: AssetLoader) : Group()
         if (!boss.hasParent()) return
         if (player.bounds.overlaps(boss.bounds))
         {
-            addLife(-1)
+            life--
             player.isInvincible = true
         }
     }
@@ -126,7 +136,7 @@ class ObjectMgr(asset: AssetLoader) : Group()
         {
             if (player.bounds.contains(shot.x, shot.y))
             {
-                addLife(-1)
+                life--
                 player.isInvincible = true
                 shot.deactivate()
             }
@@ -144,7 +154,7 @@ class ObjectMgr(asset: AssetLoader) : Group()
         {
             if (player.bounds.overlaps(enemy.bounds))
             {
-                addLife(-1)
+                life--
                 player.isInvincible = true
             }
         }
@@ -226,16 +236,6 @@ class ObjectMgr(asset: AssetLoader) : Group()
     fun getAngleToPlayer(obj: GameObject): Float
     {
         return getAngle(obj, player)
-    }
-
-    private fun addLife(value: Int)
-    {
-        life += value
-        if (life <= 0)
-        {
-            player.deactivate()
-            isGameOver = true
-        }
     }
 
     private fun hasEnemy(): Boolean
