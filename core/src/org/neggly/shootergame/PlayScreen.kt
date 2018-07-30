@@ -30,9 +30,9 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
     private val mgr = ObjectMgr(game.asset)
 
     private var counter = 0
-    private var enemyCount = 0
-
     private var level = 1
+    private var enemyCount = 0
+    private var enemyNumUntilNextBoss = 11
 
     private val bulletSe = game.asset.get("bullet_se.wav") as Sound
     private val bgm = game.asset.get("bgm.mp3") as Music
@@ -87,10 +87,16 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
             {
                 mgr.newEnemy(MathUtils.random(100f, WIDTH - 100), HEIGHT + 200)
 
-                if (++enemyCount >= level * (level + 21) / 2)
+                if (++enemyCount >= enemyNumUntilNextBoss)
                 {
                     mgr.waitForBoss = true
-                    if (level < 10) level++
+                    if (level < 10)
+                    {
+                        level++
+                        enemyNumUntilNextBoss = level * (level + 21) / 2
+                    }
+                    else
+                        enemyNumUntilNextBoss += 20
                 }
             }
         }
