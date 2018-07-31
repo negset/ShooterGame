@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Circle
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction
 
 /**
  * ボスクラス.
@@ -15,14 +16,6 @@ class Boss(texture: Texture) : GameObject(texture)
 {
     private val mgr by lazy { parent as ObjectMgr }
 
-    /** フレームカウンタ */
-    private var counter = 0
-
-    /** HPの上限値 */
-    private val maxHp = 300
-    /** HP */
-    var hp = 0
-
     /**
      * 動作状態を表す列挙型.
      * ENTER: 登場
@@ -30,17 +23,26 @@ class Boss(texture: Texture) : GameObject(texture)
      * SHOOT: ショットを撃つ
      */
     private enum class State
-    { ENTER, DELAY, SHOOT }
+    { ENTER, SHOOT, BACK }
 
     /** 動作状態 */
     private var state = State.ENTER
 
+    /** HP */
+    var hp = 0
+    /** HPの上限値 */
+    private val maxHp = 300
     /** 弾の射出方向 */
     private var shootAngle = 0f
+
+    private var shootCounter = 0
 
     /** HPゲージ描画用 */
     private val hpPixmap = Pixmap(1024, 32, Pixmap.Format.RGBA8888)
     private lateinit var hpTexture: Texture
+
+    private lateinit var enter: SequenceAction
+    private lateinit var back: SequenceAction
 
     /** あたり判定用の枠 */
     val bounds = Circle(x, y, 64f)
@@ -49,16 +51,25 @@ class Boss(texture: Texture) : GameObject(texture)
     {
         super.activate(x, y)
 
-        counter = 0
-        hp = maxHp
         state = State.ENTER
+
+        hp = maxHp
         shootAngle = 0f
+
+        shootCounter = 0
 
         hpPixmap.setColor(Color.GREEN)
         hpPixmap.fillRectangle(0, 0, 1024, 32)
         hpTexture = Texture(hpPixmap)
 
-        val enter = Actions.moveBy(0f, -800f, 1.5f, Interpolation.fade)
+        enter = Actions.sequence().apply {
+            addAction(Actions.moveBy(0f, -800f, 1.5f, Interpolation.fade))
+            addAction(Actions.delay(1f))
+        }
+        back = Actions.sequence().apply {
+            addAction(Actions.delay(1f))
+            addAction(Actions.moveBy(0f, 800f, 1.5f, Interpolation.fade))
+        }
         addAction(enter)
     }
 
@@ -69,19 +80,17 @@ class Boss(texture: Texture) : GameObject(texture)
     {
         super.draw(batch, parentAlpha)
 
+        hpPixmap.setColor(Color.DARK_GRAY)
+        hpPixmap.fill()
+        hpPixmap.setColor(Color.GREEN)
+        hpPixmap.fillRectangle(0, 0, 1024 * hp / maxHp, 32)
+        hpTexture.draw(hpPixmap, 0, 0)
         batch.draw(hpTexture, 208f, 2400f)
     }
 
     override fun act(delta: Float)
     {
         super.act(delta)
-
-        /* HPゲージの描画 */
-        hpPixmap.setColor(Color.DARK_GRAY)
-        hpPixmap.fill()
-        hpPixmap.setColor(Color.GREEN)
-        hpPixmap.fillRectangle(0, 0, 1024 * hp / maxHp, 32)
-        hpTexture.draw(hpPixmap, 0, 0)
 
         if (hp <= 0)
         {
@@ -99,16 +108,6 @@ class Boss(texture: Texture) : GameObject(texture)
             {
                 if (!hasActions())
                 {
-                    val delay = Actions.delay(1f)
-                    addAction(delay)
-                    state = State.DELAY
-                }
-            }
-
-            State.DELAY ->
-            {
-                if (!hasActions())
-                {
                     state = State.SHOOT
                 }
             }
@@ -116,7 +115,15 @@ class Boss(texture: Texture) : GameObject(texture)
             State.SHOOT ->
             {
                 shoot()
-                counter++
+                shootCounter++
+            }
+
+            State.BACK ->
+            {
+                if (!hasActions())
+                {
+                    deactivate()
+                }
             }
         }
     }
@@ -128,18 +135,20 @@ class Boss(texture: Texture) : GameObject(texture)
 
     private fun shoot()
     {
-        when
+        if (shootCounter % 3 == 0)
         {
-            counter % 3 == 0 ->
-            {
-                mgr.newShot(x, y, shootAngle)
-                mgr.newShot(x, y, shootAngle - 60)
-                mgr.newShot(x, y, shootAngle - 120)
-                mgr.newShot(x, y, shootAngle + 60)
-                mgr.newShot(x, y, shootAngle + 120)
-                mgr.newShot(x, y, shootAngle + 180)
-                shootAngle += 34
-            }
+            mgr.newShot(x, y, shootAngle)
+            mgr.newShot(x, y, shootAngle - 60)
+            mgr.newShot(x, y, shootAngle - 120)
+            mgr.newShot(x, y, shootAngle + 60)
+            mgr.newShot(x, y, shootAngle + 120)
+            mgr.newShot(x, y, shootAngle + 180)
+            shootAngle += 34
+        }
+        if (shootCounter > 900)
+        {
+            addAction(back)
+            state = State.BACK
         }
     }
 }
