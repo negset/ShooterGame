@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Circle
 import com.badlogic.gdx.math.Interpolation
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction
 
@@ -32,6 +33,7 @@ class Boss(texture: Texture) : GameObject(texture)
     var hp = 0
     /** HPの上限値 */
     private val maxHp = 300
+    private var shootPattern = 0
     /** 弾の射出方向 */
     private var shootAngle = 0f
 
@@ -54,6 +56,7 @@ class Boss(texture: Texture) : GameObject(texture)
         state = State.ENTER
 
         hp = maxHp
+        shootPattern = MathUtils.random(2)
         shootAngle = 0f
 
         shootCounter = 0
@@ -114,8 +117,17 @@ class Boss(texture: Texture) : GameObject(texture)
 
             State.SHOOT ->
             {
-                shoot()
-                shootCounter++
+                when (shootPattern)
+                {
+                    0 -> shoot0()
+                    1 -> shoot1()
+                    2 -> shoot2()
+                }
+                if (++shootCounter > 900)
+                {
+                    addAction(back)
+                    state = State.BACK
+                }
             }
 
             State.BACK ->
@@ -133,22 +145,56 @@ class Boss(texture: Texture) : GameObject(texture)
         bounds.setPosition(x, y)
     }
 
-    private fun shoot()
+    private fun shoot0()
     {
         if (shootCounter % 3 == 0)
         {
             mgr.newShot(x, y, shootAngle)
-            mgr.newShot(x, y, shootAngle - 60)
-            mgr.newShot(x, y, shootAngle - 120)
-            mgr.newShot(x, y, shootAngle + 60)
-            mgr.newShot(x, y, shootAngle + 120)
+            mgr.newShot(x, y, shootAngle - 90)
+            mgr.newShot(x, y, shootAngle + 90)
             mgr.newShot(x, y, shootAngle + 180)
-            shootAngle += 34
+            mgr.newShot(x, y, -shootAngle)
+            mgr.newShot(x, y, -shootAngle - 90)
+            mgr.newShot(x, y, -shootAngle + 90)
+            mgr.newShot(x, y, -shootAngle + 180)
+            shootAngle += 11
         }
-        if (shootCounter > 900)
+    }
+
+    private fun shoot1()
+    {
+        if (shootCounter % 40 == 0)
+            shootAngle = mgr.getAngleToPlayer(this) +
+                    if (shootCounter % 80 == 0) 30 else -30
+
+        if (shootCounter % 40 < 30 && shootCounter % 3 == 0)
         {
-            addAction(back)
-            state = State.BACK
+            val speed = .7f + shootCounter % 40 / 50f
+            mgr.newShot(x, y, shootAngle - 8, speed)
+            mgr.newShot(x, y, shootAngle + 8, speed)
+            mgr.newShot(x, y, shootAngle - 128, speed)
+            mgr.newShot(x, y, shootAngle - 112, speed)
+            mgr.newShot(x, y, shootAngle + 112, speed)
+            mgr.newShot(x, y, shootAngle + 128, speed)
+            shootAngle += if (shootCounter / 40 % 2 == 0) -6 else 6
+        }
+    }
+
+    private fun shoot2()
+    {
+        if (shootCounter % 50 == 0)
+        {
+            for (i in 180 until 540 step 5)
+                mgr.newShot(x, y, i.toFloat(), .7f)
+            if (shootCounter % 250 == 100)
+            {
+                shootAngle = mgr.getAngleToPlayer(this)
+                for (i in 0 until 10)
+                {
+                    mgr.newShot(x, y, shootAngle - i, 1.5f - i * .1f)
+                    mgr.newShot(x, y, shootAngle + i, 1.5f - i * .1f)
+                }
+            }
         }
     }
 }
