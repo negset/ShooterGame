@@ -21,10 +21,10 @@ class ObjectMgr(asset: AssetLoader) : Group()
 
     val bulletSe = asset.get("bullet_se.wav") as Sound
     val bossShotSe = asset.get("boss_shot_se.wav") as Sound
+    val enemyShotSe = asset.get("enemy_shot_se.wav") as Sound
     val explosionSe = asset.get("explosion_se.wav") as Sound
     val itemCatchSe = asset.get("item_catch_se.wav") as Sound
     val playerDamageSe = asset.get("player_damage_se.wav") as Sound
-    val shotSe = asset.get("shot_se.wav") as Sound
 
     /** スコア */
     var score = 0

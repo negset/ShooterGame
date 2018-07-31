@@ -108,7 +108,7 @@ class Enemy(texture: Texture) : GameObject(texture)
             mgr.newShot(x, y, shootAngle)
             mgr.newShot(x, y, shootAngle + 20f)
             if (shootCounter % 20 == 0)
-                mgr.shotSe.play()
+                mgr.enemyShotSe.play()
         }
 
         if (shootCounter > 45)
@@ -131,7 +131,7 @@ class Enemy(texture: Texture) : GameObject(texture)
             mgr.newShot(x, y, shootAngle)
             mgr.newShot(x, y, shootAngle + 120)
             if (shootCounter % 10 == 0)
-                mgr.shotSe.play()
+                mgr.enemyShotSe.play()
             shootAngle += 20
         }
 
@@ -147,13 +147,12 @@ class Enemy(texture: Texture) : GameObject(texture)
         if (shootCounter == 0)
         {
             shootAngle = mgr.getAngleToPlayer(this) - 30
-            mgr.shotSe.play()
         }
         if (shootCounter % 4 == 0 && shootCounter % 24 != 20)
         {
             mgr.newShot(x, y, shootAngle)
             if (shootCounter % 24 == 0)
-                mgr.shotSe.play()
+                mgr.enemyShotSe.play()
             shootAngle += if (shootCounter / 24 % 2 == 0) 12 else -12
         }
 
