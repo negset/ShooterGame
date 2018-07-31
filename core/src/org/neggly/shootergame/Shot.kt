@@ -2,32 +2,31 @@ package org.neggly.shootergame
 
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.math.Interpolation
-import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 
 class Shot(texture: Texture) : GameObject(texture)
 {
-    fun activate(x: Float, y: Float, deg: Float)
+    fun activate(x: Float, y: Float, deg: Float, speed: Float)
     {
         super.activate(x, y)
 
-        val v1 = Vector2(50f, 0f).setAngle(deg - 90)
-        val v2 = Vector2(2560f, 0f).setAngle(deg - 90)
+        val sx = speed * MathUtils.cosDeg(deg - 90)
+        val sy = speed * MathUtils.sinDeg(deg - 90)
 
-        val ac1 = Actions.moveBy(v1.x, v1.y, .5f, Interpolation.exp5)
-        val ac2 = Actions.moveBy(v2.x, v2.y, 5f)
-
-        val forever = Actions.forever(ac2)
+        val ac1 = Actions.moveBy(50 * sx, 50 * sy, .5f, Interpolation.exp5)
+        val ac2 = Actions.forever(Actions.moveBy(2560 * sx, 2560 * sy, 5f))
 
         addAction(ac1)
-        addAction(forever)
+        addAction(ac2)
     }
 
     override fun act(delta: Float)
     {
         super.act(delta)
 
-        if (x < 0 || x > WIDTH || y < 0 || y > HEIGHT)
+        if (x !in 0 - width / 2..WIDTH + width / 2
+                || y !in 0 - height / 2..HEIGHT + height / 2)
             deactivate()
     }
 }
