@@ -51,6 +51,9 @@ class ObjectMgr(asset: AssetLoader) : Group()
 
         if (bossBattle)
         {
+            if (!boss.hasParent())
+                bossBattle = false
+
             collisionDetectBulletAndBoss()
             collisionDetectionPlayerAndBoss()
         }
@@ -82,8 +85,7 @@ class ObjectMgr(asset: AssetLoader) : Group()
         {
             if (boss.bounds.contains(bullet.x, bullet.y))
             {
-                if (--boss.hp <= 0)
-                    bossBattle = false
+                boss.hp--
                 score += 10
                 bullet.deactivate()
             }
