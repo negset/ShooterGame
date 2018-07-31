@@ -58,7 +58,7 @@ class Enemy(texture: Texture) : GameObject(texture)
 
         shootCount = 0
 
-        shootPattern = MathUtils.random(1)
+        shootPattern = MathUtils.random(2)
     }
 
     override fun act(delta: Float)
@@ -87,6 +87,7 @@ class Enemy(texture: Texture) : GameObject(texture)
                 {
                     0 -> shoot0()
                     1 -> shoot1()
+                    2 -> shoot2()
                 }
                 stayCounter++
             }
@@ -121,7 +122,6 @@ class Enemy(texture: Texture) : GameObject(texture)
         if (shootCount >= 5)
         {
             addAction(backSeq)
-
             state = State.BACK
         }
     }
@@ -144,7 +144,26 @@ class Enemy(texture: Texture) : GameObject(texture)
         if (shootCount >= 6)
         {
             addAction(backSeq)
+            state = State.BACK
+        }
+    }
 
+    private fun shoot2()
+    {
+        if (shootCount == 0)
+            shootAngle = mgr.getAngleToPlayer(this) - 30
+
+        if (stayCounter % 4 == 0 && stayCounter % 24 != 20)
+        {
+            mgr.newShot(x, y, shootAngle)
+            mgr.shotSe.play()
+            shootAngle += if (stayCounter / 24 % 2 == 0) 12 else -12
+            shootCount++
+        }
+
+        if (shootCount >= 15)
+        {
+            addAction(backSeq)
             state = State.BACK
         }
     }
