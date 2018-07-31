@@ -12,7 +12,7 @@ class Enemy(texture: Texture) : GameObject(texture)
     private val mgr by lazy { parent as ObjectMgr }
 
     private enum class State
-    { ENTER, STAY, BACK }
+    { ENTER, SHOOT, BACK }
 
     private var state = State.ENTER
 
@@ -20,7 +20,7 @@ class Enemy(texture: Texture) : GameObject(texture)
     private var shootPattern = 0
     private var shootAngle = 0f
 
-    private var stayCounter = 0
+    private var shootCounter = 0
 
     private lateinit var enter: SequenceAction
     private lateinit var back: SequenceAction
@@ -37,16 +37,16 @@ class Enemy(texture: Texture) : GameObject(texture)
         hp = 30
         shootPattern = MathUtils.random(2)
 
-        stayCounter = 0
+        shootCounter = 0
 
-        val amountY = MathUtils.random(500f, 1000f)
+        val dy = MathUtils.random(500f, 1000f)
         enter = Actions.sequence().apply {
-            addAction(Actions.moveBy(0f, -amountY, 1.5f, Interpolation.fade))
+            addAction(Actions.moveBy(0f, -dy, 1.5f, Interpolation.fade))
             addAction(Actions.delay(.5f))
         }
         back = Actions.sequence().apply {
-            addAction(Actions.moveBy(0f, amountY, 1.5f, Interpolation.fade))
             addAction(Actions.delay(.5f))
+            addAction(Actions.moveBy(0f, dy, 1.5f, Interpolation.fade))
         }
         addAction(enter)
     }
@@ -68,10 +68,10 @@ class Enemy(texture: Texture) : GameObject(texture)
             State.ENTER ->
             {
                 if (!hasActions())
-                    state = State.STAY
+                    state = State.SHOOT
             }
 
-            State.STAY ->
+            State.SHOOT ->
             {
                 when (shootPattern)
                 {
@@ -79,7 +79,7 @@ class Enemy(texture: Texture) : GameObject(texture)
                     1 -> shoot1()
                     2 -> shoot2()
                 }
-                stayCounter++
+                shootCounter++
             }
 
             State.BACK ->
@@ -97,10 +97,10 @@ class Enemy(texture: Texture) : GameObject(texture)
 
     private fun shoot0()
     {
-        if (stayCounter == 0)
+        if (shootCounter == 0)
             shootAngle = mgr.getAngleToPlayer(this)
 
-        if (stayCounter % 10 == 0)
+        if (shootCounter % 10 == 0)
         {
             mgr.newShot(x, y, shootAngle - 20f)
             mgr.newShot(x, y, shootAngle)
@@ -108,7 +108,7 @@ class Enemy(texture: Texture) : GameObject(texture)
             mgr.shotSe.play()
         }
 
-        if (stayCounter > 45)
+        if (shootCounter > 45)
         {
             addAction(back)
             state = State.BACK
@@ -117,10 +117,10 @@ class Enemy(texture: Texture) : GameObject(texture)
 
     private fun shoot1()
     {
-        if (stayCounter == 0)
+        if (shootCounter == 0)
             shootAngle = 180f
 
-        if (stayCounter % 4 == 0)
+        if (shootCounter % 4 == 0)
         {
             mgr.newShot(x, y, shootAngle - 120)
             mgr.newShot(x, y, shootAngle)
@@ -129,7 +129,7 @@ class Enemy(texture: Texture) : GameObject(texture)
             shootAngle += 20
         }
 
-        if (stayCounter > 24)
+        if (shootCounter > 24)
         {
             addAction(back)
             state = State.BACK
@@ -138,17 +138,17 @@ class Enemy(texture: Texture) : GameObject(texture)
 
     private fun shoot2()
     {
-        if (stayCounter == 0)
+        if (shootCounter == 0)
             shootAngle = mgr.getAngleToPlayer(this) - 30
 
-        if (stayCounter % 4 == 0 && stayCounter % 24 != 20)
+        if (shootCounter % 4 == 0 && shootCounter % 24 != 20)
         {
             mgr.newShot(x, y, shootAngle)
             mgr.shotSe.play()
-            shootAngle += if (stayCounter / 24 % 2 == 0) 12 else -12
+            shootAngle += if (shootCounter / 24 % 2 == 0) 12 else -12
         }
 
-        if (stayCounter > 64)
+        if (shootCounter > 64)
         {
             addAction(back)
             state = State.BACK
