@@ -210,10 +210,10 @@ class ObjectMgr(asset: AssetLoader) : Group()
      * 新規に敵機弾を生成する.
      * 実際は配列から無効なものを探して有効化する.
      */
-    fun newShot(x: Float, y: Float, deg: Float)
+    fun newShot(x: Float, y: Float, deg: Float, speed: Float = 1f)
     {
         val shot = shots.find { !it.hasParent() } ?: return
-        shot.activate(x, y, deg)
+        shot.activate(x, y, deg, speed)
         addActor(shot)
     }
 
