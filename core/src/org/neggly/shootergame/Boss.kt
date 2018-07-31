@@ -117,6 +117,8 @@ class Boss(texture: Texture) : GameObject(texture)
 
             State.SHOOT ->
             {
+                if (shootCounter == 0)
+                    mgr.bossShotSe.play()
                 when (shootPattern)
                 {
                     0 -> shoot0()
