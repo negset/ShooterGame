@@ -20,6 +20,7 @@ class ObjectMgr(asset: AssetLoader) : Group()
     private val items = Array(20) { Item(asset.get("item.png") as Texture) }
 
     val bulletSe = asset.get("bullet_se.wav") as Sound
+    val bossShotSe = asset.get("boss_shot_se.wav") as Sound
     val explosionSe = asset.get("explosion_se.wav") as Sound
     val itemCatchSe = asset.get("item_catch_se.wav") as Sound
     val playerDamageSe = asset.get("player_damage_se.wav") as Sound
