@@ -3,7 +3,6 @@ package org.neggly.shootergame
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.math.MathUtils
-import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Group
 
 /**
@@ -40,6 +39,8 @@ class ObjectMgr(asset: AssetLoader) : Group()
     /** ボス戦待ち状態か否か */
     var waitForBoss = false
 
+    private var bossCount = 0
+
     init
     {
         addActor(player)
@@ -64,10 +65,11 @@ class ObjectMgr(asset: AssetLoader) : Group()
 
             if (waitForBoss && !hasEnemy())
             {
-                boss.activate(WIDTH / 2, HEIGHT + 200)
+                boss.activate(WIDTH / 2, HEIGHT + 200, bossCount % 3)
                 addActor(boss)
                 bossBattle = true
                 waitForBoss = false
+                bossCount++
             }
         }
 

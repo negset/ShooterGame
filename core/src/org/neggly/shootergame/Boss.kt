@@ -49,14 +49,14 @@ class Boss(texture: Texture) : GameObject(texture)
     /** あたり判定用の枠 */
     val bounds = Circle(x, y, 64f)
 
-    override fun activate(x: Float, y: Float)
+    fun activate(x: Float, y: Float, shootPattern: Int)
     {
         super.activate(x, y)
 
         state = State.ENTER
 
         hp = maxHp
-        shootPattern = MathUtils.random(2)
+        this.shootPattern = shootPattern
         shootAngle = 0f
 
         shootCounter = 0
