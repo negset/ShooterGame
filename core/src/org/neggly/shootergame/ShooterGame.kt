@@ -2,6 +2,7 @@ package org.neggly.shootergame
 
 import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.FPSLogger
@@ -68,6 +69,16 @@ class ShooterGame : Game()
         }
         else
             loading.render()
+
+        when
+        {
+            Gdx.input.isKeyJustPressed(Input.Keys.NUM_1) ->
+                Gdx.graphics.setWindowedMode(360, 640)
+            Gdx.input.isKeyJustPressed(Input.Keys.NUM_2) ->
+                Gdx.graphics.setWindowedMode(450, 800)
+            Gdx.input.isKeyJustPressed(Input.Keys.NUM_3) ->
+                Gdx.graphics.setWindowedMode(540, 960)
+        }
 
         //fpsLogger.log()
     }
