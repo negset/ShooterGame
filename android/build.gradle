@@ -21,8 +21,8 @@ android {
         applicationId "org.neggly.shootergame"
         minSdkVersion 9
         targetSdkVersion 27
-        versionCode 8
-        versionName "0.9.0"
+        versionCode 9
+        versionName "1.0.0"
     }
     buildTypes {
         release {
