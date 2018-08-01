@@ -11,7 +11,7 @@ You can download this game from [here](https://github.com/negset/ShooterGame/rel
 
 ## License
 - code: MIT License
-- font: SIL Open Font License
+- font: [SIL Open Font License](https://scripts.sil.org/cms/scripts/page.php?item_id=OFL_web)
 
 ## Copyright
 - BGM, SE: [魔王魂](https://maoudamashii.jokersounds.com/)
