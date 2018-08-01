@@ -46,6 +46,9 @@ class Item(texture: Texture) : GameObject(texture)
                 approach()
         }
 
+        if (y > HEIGHT + height / 2)
+            mgr.newItemIndicator(this)
+
         if (y < 0) deactivate()
     }
 

@@ -16,6 +16,7 @@
     <asset path="enemy.png" class="com.badlogic.gdx.graphics.Texture" />
     <asset path="exit.png" class="com.badlogic.gdx.graphics.Texture" />
     <asset path="item.png" class="com.badlogic.gdx.graphics.Texture" />
+    <asset path="item_indicator.png" class="com.badlogic.gdx.graphics.Texture" />
     <asset path="player.png" class="com.badlogic.gdx.graphics.Texture" />
     <asset path="shot.png" class="com.badlogic.gdx.graphics.Texture" />
     <asset path="bgm.mp3" class="com.badlogic.gdx.audio.Music" />

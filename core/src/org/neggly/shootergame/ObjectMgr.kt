@@ -18,6 +18,7 @@ class ObjectMgr(asset: AssetLoader) : Group()
     private val bullets = Array(50) { Bullet(asset.get("bullet.png") as Texture) }
     private val shots = Array(500) { Shot(asset.get("shot.png") as Texture) }
     private val items = Array(20) { Item(asset.get("item.png") as Texture) }
+    private val itemIndicators = Array(10) { ItemIndicator(asset.get("item_indicator.png") as Texture) }
 
     val bulletSe = asset.get("bullet_se.wav") as Sound
     val bossShotSe = asset.get("boss_shot_se.wav") as Sound
@@ -243,6 +244,17 @@ class ObjectMgr(asset: AssetLoader) : Group()
         val item = items.find { !it.hasParent() } ?: return
         item.activate(x, y)
         addActor(item)
+    }
+
+    /**
+     * 新規にアイテムインジケータを生成する.
+     * 実際は配列から無効なものを探して有効化する.
+     */
+    fun newItemIndicator(item: Item)
+    {
+        val itemIndicator = itemIndicators.find { !it.hasParent() } ?: return
+        itemIndicator.activate(item)
+        addActor(itemIndicator)
     }
 
     private fun getAngle(obj1: GameObject, obj2: GameObject): Float
