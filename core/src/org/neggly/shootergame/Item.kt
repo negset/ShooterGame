@@ -13,11 +13,15 @@ class Item(texture: Texture) : GameObject(texture)
 
     var approaching = false
 
+    private var hasIndicator = false
+
     override fun activate(x: Float, y: Float)
     {
         super.activate(x, y)
 
         approaching = false
+
+        hasIndicator = false
 
         val up = Actions.moveBy(0f, 600f, 2f, Interpolation.circleOut)
         val down = Actions.moveBy(0f, -600f, 1.5f)
@@ -46,8 +50,11 @@ class Item(texture: Texture) : GameObject(texture)
                 approach()
         }
 
-        if (y > HEIGHT + height / 2)
+        if (!hasIndicator && y > HEIGHT + height / 2)
+        {
             mgr.newItemIndicator(this)
+            hasIndicator = true
+        }
 
         if (y < 0) deactivate()
     }
