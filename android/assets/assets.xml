@@ -21,6 +21,7 @@
     <asset path="bgm.mp3" class="com.badlogic.gdx.audio.Music" />
     <asset path="bullet_se.wav" class="com.badlogic.gdx.audio.Sound" />
     <asset path="boss_shot_se.wav" class="com.badlogic.gdx.audio.Sound" />
+    <!--asset path="enemy_damage_se.wav" class="com.badlogic.gdx.audio.Sound" /-->
     <asset path="enemy_shot_se.wav" class="com.badlogic.gdx.audio.Sound" />
     <asset path="explosion_se.wav" class="com.badlogic.gdx.audio.Sound" />
     <asset path="item_catch_se.wav" class="com.badlogic.gdx.audio.Sound" />

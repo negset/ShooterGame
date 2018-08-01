@@ -21,6 +21,7 @@ class ObjectMgr(asset: AssetLoader) : Group()
 
     val bulletSe = asset.get("bullet_se.wav") as Sound
     val bossShotSe = asset.get("boss_shot_se.wav") as Sound
+    //val enemyDamageSe = asset.get("enemy_damage_se.wav") as Sound
     val enemyShotSe = asset.get("enemy_shot_se.wav") as Sound
     val explosionSe = asset.get("explosion_se.wav") as Sound
     val itemCatchSe = asset.get("item_catch_se.wav") as Sound
@@ -90,6 +91,7 @@ class ObjectMgr(asset: AssetLoader) : Group()
             {
                 boss.hp--
                 score += 10
+                //enemyDamageSe.play()
                 bullet.deactivate()
             }
         }
@@ -108,6 +110,7 @@ class ObjectMgr(asset: AssetLoader) : Group()
                 {
                     enemy.hp--
                     score += 10
+                    //enemyDamageSe.play()
                     bullet.deactivate()
                 }
             }
