@@ -11,8 +11,8 @@ object DesktopLauncher
     {
         val config = LwjglApplicationConfiguration()
         config.title = "シューティングゲーム"
-        config.width = 540
-        config.height = 960
+        config.width = 450
+        config.height = 800
         config.resizable = false
         LwjglApplication(ShooterGame(), config)
     }
