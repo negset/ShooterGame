@@ -78,6 +78,8 @@ class ShooterGame : Game()
                 Gdx.graphics.setWindowedMode(450, 800)
             Gdx.input.isKeyJustPressed(Input.Keys.NUM_3) ->
                 Gdx.graphics.setWindowedMode(540, 960)
+            Gdx.input.isKeyJustPressed(Input.Keys.NUM_4) ->
+                Gdx.graphics.setWindowedMode(630, 1120)
         }
 
         //fpsLogger.log()
