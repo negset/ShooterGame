@@ -19,8 +19,8 @@ class Boss(texture: Texture) : GameObject(texture)
     /**
      * 動作状態を表す列挙型.
      * ENTER: 登場
-     * DELAY: ショット開始前の待機
      * SHOOT: ショットを撃つ
+     * BACK: 退却
      */
     private enum class State
     { ENTER, SHOOT, BACK }
