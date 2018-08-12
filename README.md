@@ -6,6 +6,9 @@ Game Jam 2018
 |------------|-----------|-----------------------------------|
 | libGDX     | Kotlin    | Android / Windows / macOS / Linux |
 
+## Screenshots
+![screenshots](https://raw.githubusercontent.com/negset/ShooterGame/master/screenshot/image.png)
+
 ## Download
 You can download this game from [here](https://github.com/negset/ShooterGame/releases).
 
