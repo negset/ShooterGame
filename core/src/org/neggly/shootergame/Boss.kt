@@ -162,23 +162,23 @@ class Boss(texture: Texture) : GameObject(texture)
 
     private fun shoot1()
     {
-        val clockwise = shootCounter / 40 % 2 == 0
-        if (shootCounter % 40 == 0)
+        val clockwise = shootCounter / 45 % 2 == 0
+        if (shootCounter % 45 == 0)
         {
             shootAngle = mgr.getAngleToPlayer(this) +
-                    if (clockwise) 30 else -30
+                    if (clockwise) 45 else -45
         }
-        if (shootCounter % 40 < 30 && shootCounter % 3 == 0)
+        if (shootCounter % 45 < 30 && shootCounter % 3 == 0)
         {
-            val speed = .7f + shootCounter % 40 / 50f
+            val speed = .75f + shootCounter % 45 / 90f
             for (i in 0 until 3)
             {
-                val deg1 = shootAngle + i * 120
-                val deg2 = deg1 + if (clockwise) 15 else -15
-                mgr.newShot(x, y, deg1, speed)
-                mgr.newShot(x, y, deg2, speed)
+                val deg = shootAngle + i * 120
+                mgr.newShot(x, y, deg, speed)
+                mgr.newShot(x, y, deg + 16, speed)
+                mgr.newShot(x, y, deg - 16, speed)
             }
-            shootAngle += if (clockwise) -6 else 6
+            shootAngle += if (clockwise) -9 else 9
         }
     }
 
