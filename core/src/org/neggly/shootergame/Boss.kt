@@ -124,7 +124,7 @@ class Boss(texture: Texture) : GameObject(texture)
                     1 -> shoot1()
                     2 -> shoot2()
                 }
-                if (++shootCounter > 900)
+                if (++shootCounter >= 900)
                 {
                     addAction(back)
                     state = State.BACK
