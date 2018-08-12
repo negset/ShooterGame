@@ -150,14 +150,12 @@ class Boss(texture: Texture) : GameObject(texture)
     {
         if (shootCounter % 3 == 0)
         {
-            mgr.newShot(x, y, shootAngle)
-            mgr.newShot(x, y, shootAngle - 90)
-            mgr.newShot(x, y, shootAngle + 90)
-            mgr.newShot(x, y, shootAngle + 180)
-            mgr.newShot(x, y, -shootAngle)
-            mgr.newShot(x, y, -shootAngle - 90)
-            mgr.newShot(x, y, -shootAngle + 90)
-            mgr.newShot(x, y, -shootAngle + 180)
+            for (i in 0 until 4)
+            {
+                val deg = shootAngle + i * 90
+                mgr.newShot(x, y, deg)
+                mgr.newShot(x, y, -deg)
+            }
             shootAngle += 11
         }
     }
@@ -176,8 +174,7 @@ class Boss(texture: Texture) : GameObject(texture)
             for (i in 0 until 3)
             {
                 val deg1 = shootAngle + i * 120
-                val deg2 = shootAngle + i * 120 +
-                        if (clockwise) 15 else -15
+                val deg2 = deg1 + if (clockwise) 15 else -15
                 mgr.newShot(x, y, deg1, speed)
                 mgr.newShot(x, y, deg2, speed)
             }
