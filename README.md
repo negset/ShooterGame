@@ -7,13 +7,13 @@ Game Jam 2018
 | libGDX     | Kotlin    | Android / Windows / macOS / Linux |
 
 ## Screenshots
-![screenshots](https://raw.githubusercontent.com/negset/ShooterGame/master/screenshot/image.png)
+<img src="https://raw.githubusercontent.com/negset/ShooterGame/master/screenshot/image.png" width="540px">
 
 ## Download
 You can download this game from [here](https://github.com/negset/ShooterGame/releases).
 
 ## License
-- code: MIT License
+- code: [MIT License](https://github.com/negset/ShooterGame/blob/master/LICENSE)
 - font: [SIL Open Font License](https://scripts.sil.org/cms/scripts/page.php?item_id=OFL_web)
 
 ## Copyright
