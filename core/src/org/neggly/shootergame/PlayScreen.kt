@@ -2,7 +2,6 @@ package org.neggly.shootergame
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.audio.Music
-import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
@@ -72,7 +71,7 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
     {
         stage.act(delta)
 
-        if (!mgr.bossBattle && !mgr.waitForBoss)
+        if (!mgr.bossBattle && !mgr.waitingBoss)
         {
             if (counter % (150 - level * 10) == 0)
             {
@@ -80,7 +79,7 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
 
                 if (++enemyCount >= enemyNumUntilNextBoss)
                 {
-                    mgr.waitForBoss = true
+                    mgr.waitingBoss = true
                     if (level < 10)
                     {
                         level++

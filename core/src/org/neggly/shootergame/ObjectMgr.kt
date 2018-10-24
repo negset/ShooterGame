@@ -40,7 +40,7 @@ class ObjectMgr(asset: AssetLoader) : Group()
     var bossBattle = false
         private set
     /** ボス戦待ち状態か否か */
-    var waitForBoss = false
+    var waitingBoss = false
 
     private var bossCount = 0
 
@@ -58,32 +58,32 @@ class ObjectMgr(asset: AssetLoader) : Group()
             if (!boss.hasParent())
                 bossBattle = false
 
-            collisionDetectBulletAndBoss()
-            collisionDetectionPlayerAndBoss()
+            collisionBulletAndBoss()
+            collisionPlayerAndBoss()
         }
         else
         {
-            collisionDetectionBulletAndEnemy()
-            collisionDetectionPlayerAndEnemy()
+            collisionBulletAndEnemy()
+            collisionPlayerAndEnemy()
 
-            if (waitForBoss && !hasEnemy())
+            if (waitingBoss && !hasEnemy())
             {
                 boss.activate(WIDTH / 2, HEIGHT + 200, bossCount % 3)
                 addActor(boss)
                 bossBattle = true
-                waitForBoss = false
+                waitingBoss = false
                 bossCount++
             }
         }
 
-        collisionDetectionShotAndPlayer()
-        collisionDetectionItemAndPlayer()
+        collisionShotAndPlayer()
+        collisionItemAndPlayer()
     }
 
     /**
      * 自機弾とボスの衝突判定を行う.
      */
-    private fun collisionDetectBulletAndBoss()
+    private fun collisionBulletAndBoss()
     {
         if (!boss.hasParent()) return
         for (bullet in bullets.filter { it.hasParent() })
@@ -101,7 +101,7 @@ class ObjectMgr(asset: AssetLoader) : Group()
     /**
      * 自機弾と敵機の衝突判定を行う.
      */
-    private fun collisionDetectionBulletAndEnemy()
+    private fun collisionBulletAndEnemy()
     {
         for (enemy in enemies.filter { it.hasParent() })
         {
@@ -121,7 +121,7 @@ class ObjectMgr(asset: AssetLoader) : Group()
     /**
      * 自機とボスの衝突判定を行う.
      */
-    private fun collisionDetectionPlayerAndBoss()
+    private fun collisionPlayerAndBoss()
     {
         if (isGameOver) return
         if (player.isInvincible) return
@@ -135,7 +135,7 @@ class ObjectMgr(asset: AssetLoader) : Group()
     /**
      * 敵機弾と自機の衝突判定を行う.
      */
-    private fun collisionDetectionShotAndPlayer()
+    private fun collisionShotAndPlayer()
     {
         if (isGameOver) return
         if (player.isInvincible) return
@@ -152,7 +152,7 @@ class ObjectMgr(asset: AssetLoader) : Group()
     /**
      * 自機と敵機の衝突判定を行う.
      */
-    private fun collisionDetectionPlayerAndEnemy()
+    private fun collisionPlayerAndEnemy()
     {
         if (isGameOver) return
         if (player.isInvincible) return
@@ -168,7 +168,7 @@ class ObjectMgr(asset: AssetLoader) : Group()
     /**
      * 自機とアイテムの衝突判定を行う.
      */
-    private fun collisionDetectionItemAndPlayer()
+    private fun collisionItemAndPlayer()
     {
         if (isGameOver) return
         for (item in items.filter { it.hasParent() })
