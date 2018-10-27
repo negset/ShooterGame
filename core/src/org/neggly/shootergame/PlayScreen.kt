@@ -57,14 +57,14 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
 
     private fun draw()
     {
+        stage.draw()
+
         batch.begin()
         font.draw(batch, "スコア: ${mgr.score}", 30f, 100f, WIDTH - 60, Align.left, true)
         font.draw(batch, "ライフ: ${mgr.life}", 30f, 100f, WIDTH - 60, Align.right, true)
         if (mgr.isGameOver)
             font.draw(batch, "ゲームオーバー", 0f, 1280f, WIDTH, Align.center, true)
         batch.end()
-
-        stage.draw()
     }
 
     private fun update(delta: Float)
