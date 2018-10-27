@@ -145,6 +145,7 @@ class ObjectMgr(asset: AssetLoader) : Group()
             {
                 damagePlayer()
                 shot.deactivate()
+                return
             }
         }
     }
@@ -161,6 +162,7 @@ class ObjectMgr(asset: AssetLoader) : Group()
             if (player.bounds.overlaps(enemy.bounds))
             {
                 damagePlayer()
+                return
             }
         }
     }
