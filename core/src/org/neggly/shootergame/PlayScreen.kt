@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
+import com.badlogic.gdx.graphics.g2d.NinePatch
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.scenes.scene2d.InputEvent
@@ -35,6 +36,8 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
 
     private val bgm = game.asset.get("bgm.mp3") as Music
 
+    private val titleBtn = TextButton()
+
     override fun show()
     {
         Gdx.input.inputProcessor = stage
@@ -46,7 +49,7 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
         stage.addActor(bg)
         stage.addActor(mgr)
 
-        createExitButton()
+        setupButtons()
     }
 
     override fun render(delta: Float)
@@ -63,7 +66,7 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
         font.draw(batch, "スコア: ${mgr.score}", 30f, 100f, WIDTH - 60, Align.left, true)
         font.draw(batch, "ライフ: ${mgr.life}", 30f, 100f, WIDTH - 60, Align.right, true)
         if (mgr.isGameOver)
-            font.draw(batch, "ゲームオーバー", 0f, 1280f, WIDTH, Align.center, true)
+            font.draw(batch, "ゲームオーバー", 0f, 1480f, WIDTH, Align.center, true)
         batch.end()
     }
 
@@ -91,6 +94,9 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
             }
         }
 
+        if (mgr.isGameOver && !titleBtn.hasParent())
+            stage.addActor(titleBtn)
+
         counter++
     }
 
@@ -113,11 +119,24 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
         game.asset.unload("play")
     }
 
-    /**
-     * タイトル画面に戻るボタンを作成する。
-     */
-    private fun createExitButton()
+    private fun setupButtons()
     {
+        val btnBgTex = game.asset.get("button_bg.png") as Texture
+        btnBgTex.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
+        val btnBg = NinePatch(btnBgTex, 64, 64, 64, 64)
+        titleBtn.let {
+            it.bg = btnBg
+            it.font = font
+            it.text = "タイトルへ"
+            it.offset = 30f
+            it.clickEvent = {
+                Gdx.input.vibrate(30)
+                game.nextScreen = ScreenId.TITLE
+            }
+            it.setPosition(WIDTH / 2, 1080f)
+            it.setSize(500f, 180f)
+        }
+
         val texture = game.asset.get("exit.png") as Texture
         texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
         val image = Image(texture)
