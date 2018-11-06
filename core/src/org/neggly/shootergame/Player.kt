@@ -1,6 +1,7 @@
 package org.neggly.shootergame
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.math.Circle
 import com.badlogic.gdx.math.Vector2
@@ -19,6 +20,8 @@ class Player(texture: Texture) : GameObject(texture)
 
     private var touching = false
 
+    private var shooting = false
+
     var isInvincible = false
     private var invincibleCounter = 0
 
@@ -36,6 +39,38 @@ class Player(texture: Texture) : GameObject(texture)
     {
         super.act(delta)
 
+        if (moveByTouch() || moveByKeyboard())
+        {
+            if (x < 0) x = 0f
+            else if (x > WIDTH) x = WIDTH
+            if (y < 0) y = 0f
+            else if (y > HEIGHT) y = HEIGHT
+        }
+
+        if (shooting && counter % 5 == 0)
+        {
+            mgr.newBullet(x, y + 128)
+            mgr.newBullet(x - 25, y + 108)
+            mgr.newBullet(x + 25, y + 108)
+            mgr.bulletSe.play()
+        }
+
+        if (isInvincible)
+        {
+            color.a = if (invincibleCounter % 10 < 5) 0f else 1f
+            if (++invincibleCounter > 200)
+            {
+                color.a = 1f
+                invincibleCounter = 0
+                isInvincible = false
+            }
+        }
+
+        counter++
+    }
+
+    private fun moveByTouch(): Boolean
+    {
         if (Gdx.input.isTouched)
         {
             touchPoint.set(Gdx.input.x.toFloat(), Gdx.input.y.toFloat())
@@ -53,38 +88,53 @@ class Player(texture: Texture) : GameObject(texture)
                 val v = touchPoint.sub(touchOrigin).scl(1.5f)
                 x = baseX + v.x
                 y = baseY + v.y
+            }
+            shooting = true
+            return true
+        }
 
-                if (x < 0) x = 0f
-                else if (x > WIDTH) x = WIDTH
-                if (y < 0) y = 0f
-                else if (y > HEIGHT) y = HEIGHT
+        touching = false
+        shooting = false
+        return false
+    }
 
-                if (counter % 5 == 0)
+    private fun moveByKeyboard(): Boolean
+    {
+        shooting = Gdx.input.isKeyPressed(Input.Keys.Z)
+
+        val speed =
+                when
                 {
-                    mgr.newBullet(x, y + 128)
-                    mgr.newBullet(x - 25, y + 108)
-                    mgr.newBullet(x + 25, y + 108)
-                    mgr.bulletSe.play()
+                    Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) -> 4f
+                    Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) -> 24f
+                    else -> 14f
                 }
-            }
-        }
-        else
-        {
-            touching = false
-        }
 
-        if (isInvincible)
+        val vec = Vector2()
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
         {
-            color.a = if (invincibleCounter % 10 < 5) 0f else 1f
-            if (++invincibleCounter > 200)
-            {
-                color.a = 1f
-                invincibleCounter = 0
-                isInvincible = false
-            }
+            vec.x = 1f
         }
-
-        counter++
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT))
+        {
+            vec.x = -1f
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.UP))
+        {
+            vec.y = 1f
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN))
+        {
+            vec.y = -1f
+        }
+        return if (vec.len2() > 0)
+        {
+            vec.setLength(speed)
+            x += vec.x
+            y += vec.y
+            true
+        }
+        else false
     }
 
     override fun positionChanged()
