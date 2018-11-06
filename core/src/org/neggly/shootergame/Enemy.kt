@@ -26,7 +26,7 @@ class Enemy(texture: Texture) : GameObject(texture)
     private lateinit var back: SequenceAction
 
     /** あたり判定用の枠 */
-    val bounds = Circle(x, y, 64f)
+    val bounds = Circle(x, y, 108f)
 
     override fun activate(x: Float, y: Float)
     {

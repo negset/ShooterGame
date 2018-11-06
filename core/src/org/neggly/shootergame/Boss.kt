@@ -46,7 +46,7 @@ class Boss(texture: Texture) : GameObject(texture)
     private lateinit var back: SequenceAction
 
     /** あたり判定用の枠 */
-    val bounds = Circle(x, y, 64f)
+    val bounds = Circle(x, y, 108f)
 
     fun activate(x: Float, y: Float, shootPattern: Int)
     {
