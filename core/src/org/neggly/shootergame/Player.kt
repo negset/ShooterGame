@@ -107,7 +107,7 @@ class Player(texture: Texture) : GameObject(texture)
                 {
                     Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) -> 4f
                     Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) -> 24f
-                    else -> 14f
+                    else -> 16f
                 }
 
         val vec = Vector2()
