@@ -24,7 +24,7 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
     private val stage = Stage(FitViewport(WIDTH, HEIGHT))
     private val batch = SpriteBatch()
 
-    private val font = game.asset.get("font.ttf") as BitmapFont
+    private val font: BitmapFont = game.asset.get("font.ttf")
 
     private val bg = Bg(game.asset)
     private val mgr = ObjectMgr(game.asset)
@@ -34,7 +34,7 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
     private var enemyCount = 0
     private var enemyNumUntilNextBoss = 11
 
-    private val bgm = game.asset.get("bgm.mp3") as Music
+    private val bgm: Music = game.asset.get("bgm.mp3")
 
     private val titleBtn = TextButton()
 
@@ -121,7 +121,7 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
 
     private fun setupButtons()
     {
-        val btnBgTex = game.asset.get("button_bg.png") as Texture
+        val btnBgTex: Texture = game.asset.get("button_bg.png")
         btnBgTex.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
         val btnBg = NinePatch(btnBgTex, 64, 64, 64, 64)
         titleBtn.let {
@@ -137,7 +137,7 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
             it.setSize(500f, 180f)
         }
 
-        val texture = game.asset.get("exit.png") as Texture
+        val texture: Texture = game.asset.get("exit.png")
         texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
         val image = Image(texture)
         image.setPosition(WIDTH - 100, HEIGHT - 100)

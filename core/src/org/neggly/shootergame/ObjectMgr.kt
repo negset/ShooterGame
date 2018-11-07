@@ -12,21 +12,21 @@ import com.badlogic.gdx.scenes.scene2d.Group
  */
 class ObjectMgr(asset: AssetLoader) : Group()
 {
-    val player = Player(asset.get("player.png") as Texture)
-    private val boss = Boss(asset.get("boss.png") as Texture)
-    private val enemies = Array(20) { Enemy(asset.get("enemy.png") as Texture) }
-    private val bullets = Array(50) { Bullet(asset.get("bullet.png") as Texture) }
-    private val shots = Array(500) { Shot(asset.get("shot.png") as Texture) }
-    private val items = Array(20) { Item(asset.get("item.png") as Texture) }
-    private val itemIndicators = Array(10) { ItemIndicator(asset.get("item_indicator.png") as Texture) }
+    val player = Player(asset.get("player.png"))
+    private val boss = Boss(asset.get("boss.png"))
+    private val enemies = Array(20) { Enemy(asset.get("enemy.png")) }
+    private val bullets = Array(50) { Bullet(asset.get("bullet.png")) }
+    private val shots = Array(500) { Shot(asset.get("shot.png")) }
+    private val items = Array(20) { Item(asset.get("item.png")) }
+    private val itemIndicators = Array(10) { ItemIndicator(asset.get("item_indicator.png")) }
 
-    val bulletSe = asset.get("bullet_se.wav") as Sound
-    val bossShotSe = asset.get("boss_shot_se.wav") as Sound
-    //val enemyDamageSe = asset.get("enemy_damage_se.wav") as Sound
-    val enemyShotSe = asset.get("enemy_shot_se.wav") as Sound
-    val explosionSe = asset.get("explosion_se.wav") as Sound
-    val itemCatchSe = asset.get("item_catch_se.wav") as Sound
-    val playerDamageSe = asset.get("player_damage_se.wav") as Sound
+    val bulletSe: Sound = asset.get("bullet_se.wav")
+    val bossShotSe: Sound = asset.get("boss_shot_se.wav")
+    //val enemyDamageSe: Sound = asset.get("enemy_damage_se.wav")
+    val enemyShotSe: Sound = asset.get("enemy_shot_se.wav")
+    val explosionSe: Sound = asset.get("explosion_se.wav")
+    val itemCatchSe: Sound = asset.get("item_catch_se.wav")
+    val playerDamageSe: Sound = asset.get("player_damage_se.wav")
 
     /** スコア */
     var score = 0

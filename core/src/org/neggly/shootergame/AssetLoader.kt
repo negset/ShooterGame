@@ -14,7 +14,7 @@ class AssetLoader(xmlPath: String)
 
     fun dispose() = manager.dispose()
 
-    fun get(name: String): Any = manager.get(name)
+    fun <T> get(name: String): T = manager.get<T>(name)
 
     fun load(sceneId: String)
     {

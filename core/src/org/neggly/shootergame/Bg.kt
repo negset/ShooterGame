@@ -20,7 +20,7 @@ class Bg(asset: AssetLoader) : Group()
     private val bg: Texture
 
     private val stars = Array(30) {
-        Star(asset.get("bg_star.png") as Texture,
+        Star(asset.get("bg_star.png"),
                 MathUtils.random(WIDTH), MathUtils.random(HEIGHT))
     }
 

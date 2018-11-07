@@ -14,7 +14,7 @@ class TitleScreen(game: ShooterGame) : ScreenAdapter(game)
     private val stage = Stage(FitViewport(WIDTH, HEIGHT))
     private val batch = SpriteBatch()
 
-    private val font = game.asset.get("font.ttf") as BitmapFont
+    private val font: BitmapFont = game.asset.get("font.ttf")
 
     private val bg = Bg(game.asset)
 
@@ -74,7 +74,7 @@ class TitleScreen(game: ShooterGame) : ScreenAdapter(game)
 
     private fun setupButtons()
     {
-        val btnBgTex = game.asset.get("button_bg.png") as Texture
+        val btnBgTex: Texture = game.asset.get("button_bg.png")
         btnBgTex.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
         val btnBg = NinePatch(btnBgTex, 64, 64, 64, 64)
 
