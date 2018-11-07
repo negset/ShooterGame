@@ -121,9 +121,10 @@ class PlayScreen(game: ShooterGame) : ScreenAdapter(game)
 
     private fun setupButtons()
     {
-        val btnBgTex: Texture = game.asset.get("button_bg.png")
-        btnBgTex.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
-        val btnBg = NinePatch(btnBgTex, 64, 64, 64, 64)
+        val btnBg = game.asset.get<Texture>("button_bg.png").run {
+            setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
+            NinePatch(this, 64, 64, 64, 64)
+        }
         titleBtn.let {
             it.bg = btnBg
             it.font = font
