@@ -7,7 +7,6 @@ import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Group
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
-import com.sun.deploy.uitoolkit.ToolkitStore.dispose
 import com.badlogic.gdx.graphics.Pixmap
 
 
@@ -38,9 +37,10 @@ class Bg(asset: AssetLoader) : Group()
             addActor(star)
     }
 
-    override fun draw(batch: Batch?, parentAlpha: Float)
+    override fun draw(batch: Batch, parentAlpha: Float)
     {
-        batch?.draw(bg, 0f, 0f, WIDTH, HEIGHT)
+        batch.draw(bg, 0f, 0f, WIDTH, HEIGHT)
+
         super.draw(batch, parentAlpha)
     }
 
