@@ -27,11 +27,12 @@ class Bg(asset: AssetLoader) : Group()
 
     init
     {
-        val pixmap = Pixmap(WIDTH.toInt(), HEIGHT.toInt(), Pixmap.Format.RGBA8888)
-        pixmap.setColor(Color(0f, 0f, 0.30f, 1f))
-        pixmap.fillRectangle(0, 0, WIDTH.toInt(), HEIGHT.toInt())
-        bg = Texture(pixmap)
-        pixmap.dispose()
+        Pixmap(1, 1, Pixmap.Format.RGBA8888).run {
+            setColor(Color(0f, 0f, 0.30f, 1f))
+            fill()
+            bg = Texture(this)
+            dispose()
+        }
 
         for (star in stars)
             addActor(star)

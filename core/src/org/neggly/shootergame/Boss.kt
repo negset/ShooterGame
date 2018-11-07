@@ -39,8 +39,8 @@ class Boss(texture: Texture) : GameObject(texture)
     private var shootCounter = 0
 
     /** HPゲージ描画用 */
-    private val hpPixmap = Pixmap(1024, 32, Pixmap.Format.RGBA8888)
-    private lateinit var hpTexture: Texture
+    private lateinit var hpBarBg: Texture
+    private lateinit var hpBarFg: Texture
 
     private lateinit var enter: SequenceAction
     private lateinit var back: SequenceAction
@@ -60,9 +60,18 @@ class Boss(texture: Texture) : GameObject(texture)
 
         shootCounter = 0
 
-        hpPixmap.setColor(Color.GREEN)
-        hpPixmap.fillRectangle(0, 0, 1024, 32)
-        hpTexture = Texture(hpPixmap)
+        Pixmap(1, 1, Pixmap.Format.RGBA8888).run {
+            setColor(Color.DARK_GRAY)
+            fill()
+            hpBarBg = Texture(this)
+            dispose()
+        }
+        Pixmap(1, 1, Pixmap.Format.RGBA8888).run {
+            setColor(Color.GREEN)
+            fill()
+            hpBarFg = Texture(this)
+            dispose()
+        }
 
         enter = Actions.sequence().apply {
             addAction(Actions.moveBy(0f, -800f, 1.5f, Interpolation.fade))
@@ -82,12 +91,8 @@ class Boss(texture: Texture) : GameObject(texture)
     {
         super.draw(batch, parentAlpha)
 
-        hpPixmap.setColor(Color.DARK_GRAY)
-        hpPixmap.fill()
-        hpPixmap.setColor(Color.GREEN)
-        hpPixmap.fillRectangle(0, 0, 1024 * hp / maxHp, 32)
-        hpTexture.draw(hpPixmap, 0, 0)
-        batch.draw(hpTexture, 208f, 2400f)
+        batch.draw(hpBarBg, 208f, 2400f, 1024f, 32f)
+        batch.draw(hpBarFg, 208f, 2400f, 1024f * hp / maxHp, 32f)
     }
 
     override fun act(delta: Float)
