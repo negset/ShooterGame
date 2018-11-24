@@ -1,19 +1,24 @@
 package org.neggly.shootergame
 
-import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 
-class Item(texture: Texture) : GameObject(texture)
+class Item(asset: AssetLoader) : GameObject()
 {
-    private val mgr by lazy { parent as ObjectMgr }
+    private val itemCatchSe = asset.get<Sound>("item_catch_se.wav")
 
     private var pos = Vector2()
 
     var approaching = false
 
     private var hasIndicator = false
+
+    init
+    {
+        texture = asset.get("item.png")
+    }
 
     override fun activate(x: Float, y: Float)
     {
@@ -57,6 +62,13 @@ class Item(texture: Texture) : GameObject(texture)
         }
 
         if (y < 0) deactivate()
+    }
+
+    fun caught()
+    {
+        mgr.score += 100
+        itemCatchSe.play()
+        deactivate()
     }
 
     private fun approach()

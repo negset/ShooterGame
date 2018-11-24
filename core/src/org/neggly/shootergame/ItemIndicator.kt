@@ -1,10 +1,13 @@
 package org.neggly.shootergame
 
-import com.badlogic.gdx.graphics.Texture
-
-class ItemIndicator(texture: Texture) : GameObject(texture)
+class ItemIndicator(asset: AssetLoader) : GameObject()
 {
     private lateinit var item: Item
+
+    init
+    {
+        texture = asset.get("item_indicator.png")
+    }
 
     fun activate(item: Item)
     {

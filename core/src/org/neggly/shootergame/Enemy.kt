@@ -1,22 +1,23 @@
 package org.neggly.shootergame
 
-import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.math.Circle
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction
 
-class Enemy(texture: Texture) : GameObject(texture)
+class Enemy(asset: AssetLoader) : GameObject()
 {
-    private val mgr by lazy { parent as ObjectMgr }
+    private val enemyShotSe = asset.get<Sound>("enemy_shot_se.wav")
+    private val explosionSe = asset.get<Sound>("explosion_se.wav")
 
     private enum class State
     { ENTER, SHOOT, BACK }
 
     private var state = State.ENTER
 
-    var hp = 0
+    private var hp = 0
     private var shootPattern = 0
     private var shootAngle = 0f
 
@@ -27,6 +28,11 @@ class Enemy(texture: Texture) : GameObject(texture)
 
     /** あたり判定用の枠 */
     val bounds = Circle(x, y, 108f)
+
+    init
+    {
+        texture = asset.get("enemy.png")
+    }
 
     override fun activate(x: Float, y: Float)
     {
@@ -55,14 +61,6 @@ class Enemy(texture: Texture) : GameObject(texture)
     {
         super.act(delta)
 
-        if (hp <= 0)
-        {
-            mgr.score += 300
-            mgr.newItem(x, y)
-            mgr.explosionSe.play()
-            deactivate()
-        }
-
         when (state)
         {
             State.ENTER ->
@@ -90,6 +88,19 @@ class Enemy(texture: Texture) : GameObject(texture)
         }
     }
 
+    fun damaged()
+    {
+        mgr.score += 10
+
+        if (--hp <= 0)
+        {
+            mgr.score += 300
+            mgr.newItem(x, y)
+            explosionSe.play()
+            deactivate()
+        }
+    }
+
     override fun positionChanged()
     {
         bounds.setPosition(x, y)
@@ -108,7 +119,7 @@ class Enemy(texture: Texture) : GameObject(texture)
             mgr.newShot(x, y, shootAngle)
             mgr.newShot(x, y, shootAngle + 20f)
             if (shootCounter % 20 == 0)
-                mgr.enemyShotSe.play()
+                enemyShotSe.play()
         }
 
         if (shootCounter > 45)
@@ -131,7 +142,7 @@ class Enemy(texture: Texture) : GameObject(texture)
             mgr.newShot(x, y, shootAngle)
             mgr.newShot(x, y, shootAngle + 120)
             if (shootCounter % 10 == 0)
-                mgr.enemyShotSe.play()
+                enemyShotSe.play()
             shootAngle += 20
         }
 
@@ -152,7 +163,7 @@ class Enemy(texture: Texture) : GameObject(texture)
         {
             mgr.newShot(x, y, shootAngle)
             if (shootCounter % 24 == 0)
-                mgr.enemyShotSe.play()
+                enemyShotSe.play()
             shootAngle += if (shootCounter / 24 % 2 == 0) 12 else -12
         }
 

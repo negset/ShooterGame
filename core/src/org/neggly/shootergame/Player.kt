@@ -2,13 +2,15 @@ package org.neggly.shootergame
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
-import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.math.Circle
 import com.badlogic.gdx.math.Vector2
 
-class Player(texture: Texture) : GameObject(texture)
+class Player(asset: AssetLoader) : GameObject()
 {
-    private val mgr by lazy { parent as ObjectMgr }
+    private val bulletSe = asset.get<Sound>("bullet_se.wav")
+    private val playerDamageSe = asset.get<Sound>("player_damage_se.wav")
+    private val explosionSe = asset.get<Sound>("explosion_se.wav")
 
     private var counter = 0
 
@@ -31,6 +33,7 @@ class Player(texture: Texture) : GameObject(texture)
 
     init
     {
+        texture = asset.get("player.png")
         x = WIDTH / 2
         y = 500f
     }
@@ -52,7 +55,7 @@ class Player(texture: Texture) : GameObject(texture)
             mgr.newBullet(x, y + 128)
             mgr.newBullet(x - 25, y + 108)
             mgr.newBullet(x + 25, y + 108)
-            mgr.bulletSe.play()
+            bulletSe.play()
         }
 
         if (isInvincible)
@@ -67,6 +70,21 @@ class Player(texture: Texture) : GameObject(texture)
         }
 
         counter++
+    }
+
+    fun damaged()
+    {
+        if (--mgr.life > 0)
+        {
+            playerDamageSe.play()
+            isInvincible = true
+        }
+        else
+        {
+            explosionSe.play()
+            deactivate()
+            mgr.isGameOver = true
+        }
     }
 
     private fun moveByTouch(): Boolean

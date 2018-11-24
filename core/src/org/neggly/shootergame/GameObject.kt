@@ -11,16 +11,19 @@ import com.badlogic.gdx.scenes.scene2d.Actor
  *
  * @author negset
  */
-open class GameObject(private val texture: Texture) : Actor()
+open class GameObject : Actor()
 {
-    init
-    {
-        /* 拡大・縮小時も滑らかにする. */
-        texture.setFilter(TextureFilter.Linear, TextureFilter.Linear)
+    var texture: Texture? = null
+        set(value)
+        {
+            field = value?.also {
+                it.setFilter(TextureFilter.Linear, TextureFilter.Linear)
+                width = it.width.toFloat()
+                height = it.height.toFloat()
+            }
+        }
 
-        width = texture.width.toFloat()
-        height = texture.height.toFloat()
-    }
+    lateinit var mgr: ObjectMgr
 
     /**
      * オブジェクトの初期化処理を行う.

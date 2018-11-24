@@ -1,5 +1,6 @@
 package org.neggly.shootergame
 
+import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
@@ -12,9 +13,10 @@ import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction
 /**
  * ボスクラス.
  */
-class Boss(texture: Texture) : GameObject(texture)
+class Boss(asset: AssetLoader) : GameObject()
 {
-    private val mgr by lazy { parent as ObjectMgr }
+    private val bossShotSe = asset.get<Sound>("boss_shot_se.wav")
+    private val explosionSe = asset.get<Sound>("explosion_se.wav")
 
     /**
      * 動作状態を表す列挙型.
@@ -29,7 +31,7 @@ class Boss(texture: Texture) : GameObject(texture)
     private var state = State.ENTER
 
     /** HP */
-    var hp = 0
+    private var hp = 0
     /** HPの上限値 */
     private val maxHp = 300
     private var shootPattern = 0
@@ -47,6 +49,11 @@ class Boss(texture: Texture) : GameObject(texture)
 
     /** あたり判定用の枠 */
     val bounds = Circle(x, y, 108f)
+
+    init
+    {
+        texture = asset.get("boss.png")
+    }
 
     fun activate(x: Float, y: Float, shootPattern: Int)
     {
@@ -99,16 +106,6 @@ class Boss(texture: Texture) : GameObject(texture)
     {
         super.act(delta)
 
-        if (hp <= 0)
-        {
-            mgr.score += 3000
-            mgr.newItem(x, y + 36)
-            mgr.newItem(x - 48, y - 36)
-            mgr.newItem(x + 48, y - 36)
-            mgr.explosionSe.play()
-            deactivate()
-        }
-
         when (state)
         {
             State.ENTER ->
@@ -122,7 +119,7 @@ class Boss(texture: Texture) : GameObject(texture)
             State.SHOOT ->
             {
                 if (shootCounter == 0)
-                    mgr.bossShotSe.play()
+                    bossShotSe.play()
                 when (shootPattern)
                 {
                     0 -> shoot0()
@@ -143,6 +140,21 @@ class Boss(texture: Texture) : GameObject(texture)
                     deactivate()
                 }
             }
+        }
+    }
+
+    fun damaged()
+    {
+        mgr.score += 10
+
+        if (--hp <= 0)
+        {
+            mgr.score += 3000
+            mgr.newItem(x, y + 36)
+            mgr.newItem(x - 48, y - 36)
+            mgr.newItem(x + 48, y - 36)
+            explosionSe.play()
+            deactivate()
         }
     }
 

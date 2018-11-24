@@ -1,7 +1,7 @@
 package org.neggly.shootergame
 
-import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.math.MathUtils
+import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Group
 
 /**
@@ -11,30 +11,20 @@ import com.badlogic.gdx.scenes.scene2d.Group
  */
 class ObjectMgr(asset: AssetLoader) : Group()
 {
-    val player = Player(asset.get("player.png"))
-    private val boss = Boss(asset.get("boss.png"))
-    private val enemies = Array(20) { Enemy(asset.get("enemy.png")) }
-    private val bullets = Array(50) { Bullet(asset.get("bullet.png")) }
-    private val shots = Array(500) { Shot(asset.get("shot.png")) }
-    private val items = Array(20) { Item(asset.get("item.png")) }
-    private val itemIndicators = Array(10) { ItemIndicator(asset.get("item_indicator.png")) }
-
-    val bulletSe: Sound = asset.get("bullet_se.wav")
-    val bossShotSe: Sound = asset.get("boss_shot_se.wav")
-    //val enemyDamageSe: Sound = asset.get("enemy_damage_se.wav")
-    val enemyShotSe: Sound = asset.get("enemy_shot_se.wav")
-    val explosionSe: Sound = asset.get("explosion_se.wav")
-    val itemCatchSe: Sound = asset.get("item_catch_se.wav")
-    val playerDamageSe: Sound = asset.get("player_damage_se.wav")
+    val player = Player(asset)
+    private val boss = Boss(asset)
+    private val enemies = Array(20) { Enemy(asset) }
+    private val bullets = Array(50) { Bullet(asset) }
+    private val shots = Array(500) { Shot(asset) }
+    private val items = Array(20) { Item(asset) }
+    private val itemIndicators = Array(10) { ItemIndicator(asset) }
 
     /** スコア */
     var score = 0
     /** 残機 */
     var life = 3
-        private set
     /** ゲームオーバーか否か */
     var isGameOver = false
-        private set
     /** ボス戦中か否か */
     var bossBattle = false
         private set
@@ -45,7 +35,23 @@ class ObjectMgr(asset: AssetLoader) : Group()
 
     init
     {
-        addActor(player)
+        addObject(player)
+    }
+
+    @Deprecated(
+            message = "addObjectを使用する.",
+            replaceWith = ReplaceWith("addObject(gameObject)")
+    )
+    override fun addActor(actor: Actor?)
+    {
+        super.addActor(actor)
+    }
+
+    @Suppress("DEPRECATION")
+    private fun addObject(gameObject: GameObject)
+    {
+        gameObject.mgr = this
+        addActor(gameObject)
     }
 
     override fun act(delta: Float)
@@ -68,7 +74,7 @@ class ObjectMgr(asset: AssetLoader) : Group()
             if (waitingBoss && !hasEnemy())
             {
                 boss.activate(WIDTH / 2, HEIGHT + 200, bossCount % 3)
-                addActor(boss)
+                addObject(boss)
                 bossBattle = true
                 waitingBoss = false
                 bossCount++
@@ -89,10 +95,9 @@ class ObjectMgr(asset: AssetLoader) : Group()
         {
             if (boss.bounds.contains(bullet.x, bullet.y))
             {
-                boss.hp--
-                score += 10
-                //enemyDamageSe.play()
+                boss.damaged()
                 bullet.deactivate()
+                if (!boss.hasParent()) return
             }
         }
     }
@@ -102,15 +107,13 @@ class ObjectMgr(asset: AssetLoader) : Group()
      */
     private fun collisionBulletAndEnemy()
     {
-        for (enemy in enemies.filter { it.hasParent() })
+        for (bullet in bullets.filter { it.hasParent() })
         {
-            for (bullet in bullets.filter { it.hasParent() })
+            for (enemy in enemies.filter { it.hasParent() })
             {
                 if (enemy.bounds.contains(bullet.x, bullet.y))
                 {
-                    enemy.hp--
-                    score += 10
-                    //enemyDamageSe.play()
+                    enemy.damaged()
                     bullet.deactivate()
                 }
             }
@@ -127,7 +130,7 @@ class ObjectMgr(asset: AssetLoader) : Group()
         if (!boss.hasParent()) return
         if (player.bounds.overlaps(boss.bounds))
         {
-            damagePlayer()
+            player.damaged()
         }
     }
 
@@ -142,7 +145,7 @@ class ObjectMgr(asset: AssetLoader) : Group()
         {
             if (player.bounds.contains(shot.x, shot.y))
             {
-                damagePlayer()
+                player.damaged()
                 shot.deactivate()
                 return
             }
@@ -160,7 +163,7 @@ class ObjectMgr(asset: AssetLoader) : Group()
         {
             if (player.bounds.overlaps(enemy.bounds))
             {
-                damagePlayer()
+                player.damaged()
                 return
             }
         }
@@ -176,30 +179,13 @@ class ObjectMgr(asset: AssetLoader) : Group()
         {
             if (player.bounds.contains(item.x, item.y))
             {
-                score += 100
-                itemCatchSe.play()
-                item.deactivate()
+                item.caught()
             }
-            else if (!item.approaching
-                    && player.itemApproachBounds.contains(item.x, item.y))
+            else if (!item.approaching &&
+                    player.itemApproachBounds.contains(item.x, item.y))
             {
                 item.approaching = true
             }
-        }
-    }
-
-    private fun damagePlayer()
-    {
-        if (--life > 0)
-        {
-            playerDamageSe.play()
-            player.isInvincible = true
-        }
-        else
-        {
-            explosionSe.play()
-            player.deactivate()
-            isGameOver = true
         }
     }
 
@@ -209,9 +195,10 @@ class ObjectMgr(asset: AssetLoader) : Group()
      */
     fun newBullet(x: Float, y: Float)
     {
-        val bullet = bullets.find { !it.hasParent() } ?: return
-        bullet.activate(x, y)
-        addActor(bullet)
+        bullets.find { !it.hasParent() }?.run {
+            activate(x, y)
+            addObject(this)
+        }
     }
 
     /**
@@ -220,9 +207,10 @@ class ObjectMgr(asset: AssetLoader) : Group()
      */
     fun newShot(x: Float, y: Float, deg: Float, speed: Float = 1f)
     {
-        val shot = shots.find { !it.hasParent() } ?: return
-        shot.activate(x, y, deg, speed)
-        addActor(shot)
+        shots.find { !it.hasParent() }?.run {
+            activate(x, y, deg, speed)
+            addObject(this)
+        }
     }
 
     /**
@@ -231,9 +219,10 @@ class ObjectMgr(asset: AssetLoader) : Group()
      */
     fun newEnemy(x: Float, y: Float)
     {
-        val enemy = enemies.find { !it.hasParent() } ?: return
-        enemy.activate(x, y)
-        addActor(enemy)
+        enemies.find { !it.hasParent() }?.run {
+            activate(x, y)
+            addObject(this)
+        }
     }
 
     /**
@@ -242,9 +231,10 @@ class ObjectMgr(asset: AssetLoader) : Group()
      */
     fun newItem(x: Float, y: Float)
     {
-        val item = items.find { !it.hasParent() } ?: return
-        item.activate(x, y)
-        addActor(item)
+        items.find { !it.hasParent() }?.run {
+            activate(x, y)
+            addObject(this)
+        }
     }
 
     /**
@@ -253,9 +243,10 @@ class ObjectMgr(asset: AssetLoader) : Group()
      */
     fun newItemIndicator(item: Item)
     {
-        val itemIndicator = itemIndicators.find { !it.hasParent() } ?: return
-        itemIndicator.activate(item)
-        addActor(itemIndicator)
+        itemIndicators.find { !it.hasParent() }?.run {
+            activate(item)
+            addObject(this)
+        }
     }
 
     private fun getAngle(obj1: GameObject, obj2: GameObject): Float

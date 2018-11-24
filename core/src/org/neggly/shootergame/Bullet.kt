@@ -1,9 +1,12 @@
 package org.neggly.shootergame
 
-import com.badlogic.gdx.graphics.Texture
-
-class Bullet(texture: Texture) : GameObject(texture)
+class Bullet(asset: AssetLoader) : GameObject()
 {
+    init
+    {
+        texture = asset.get("bullet.png")
+    }
+
     override fun act(delta: Float)
     {
         super.act(delta)
