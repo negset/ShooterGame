@@ -7,10 +7,10 @@ import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction
 
-class Enemy(asset: AssetLoader) : GameObject()
+class Enemy(mgr: ObjectMgr) : GameObject(mgr)
 {
-    private val enemyShotSe = asset.get<Sound>("enemy_shot_se.wav")
-    private val explosionSe = asset.get<Sound>("explosion_se.wav")
+    private val enemyShotSe: Sound
+    private val explosionSe: Sound
 
     private enum class State
     { ENTER, SHOOT, BACK }
@@ -31,7 +31,11 @@ class Enemy(asset: AssetLoader) : GameObject()
 
     init
     {
-        texture = asset.get("enemy.png")
+        mgr.asset.run {
+            texture = get("enemy.png")
+            enemyShotSe = get("enemy_shot_se.wav")
+            explosionSe = get("explosion_se.wav")
+        }
     }
 
     override fun activate(x: Float, y: Float)

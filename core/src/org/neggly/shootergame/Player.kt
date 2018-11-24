@@ -6,11 +6,11 @@ import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.math.Circle
 import com.badlogic.gdx.math.Vector2
 
-class Player(asset: AssetLoader) : GameObject()
+class Player(mgr: ObjectMgr) : GameObject(mgr)
 {
-    private val bulletSe = asset.get<Sound>("bullet_se.wav")
-    private val playerDamageSe = asset.get<Sound>("player_damage_se.wav")
-    private val explosionSe = asset.get<Sound>("explosion_se.wav")
+    private val bulletSe: Sound
+    private val playerDamageSe: Sound
+    private val explosionSe: Sound
 
     private var counter = 0
 
@@ -33,7 +33,13 @@ class Player(asset: AssetLoader) : GameObject()
 
     init
     {
-        texture = asset.get("player.png")
+        mgr.asset.run {
+            texture = get("player.png")
+            bulletSe = get("bullet_se.wav")
+            playerDamageSe = get("player_damage_se.wav")
+            explosionSe = get("explosion_se.wav")
+        }
+
         x = WIDTH / 2
         y = 500f
     }

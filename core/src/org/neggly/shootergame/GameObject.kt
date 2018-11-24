@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor
  *
  * @author negset
  */
-open class GameObject : Actor()
+open class GameObject(val mgr: ObjectMgr) : Actor()
 {
     var texture: Texture? = null
         set(value)
@@ -22,8 +22,6 @@ open class GameObject : Actor()
                 height = it.height.toFloat()
             }
         }
-
-    lateinit var mgr: ObjectMgr
 
     /**
      * オブジェクトの初期化処理を行う.

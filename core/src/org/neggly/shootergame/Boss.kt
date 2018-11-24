@@ -13,10 +13,10 @@ import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction
 /**
  * ボスクラス.
  */
-class Boss(asset: AssetLoader) : GameObject()
+class Boss(mgr: ObjectMgr) : GameObject(mgr)
 {
-    private val bossShotSe = asset.get<Sound>("boss_shot_se.wav")
-    private val explosionSe = asset.get<Sound>("explosion_se.wav")
+    private val bossShotSe: Sound
+    private val explosionSe: Sound
 
     /**
      * 動作状態を表す列挙型.
@@ -52,7 +52,11 @@ class Boss(asset: AssetLoader) : GameObject()
 
     init
     {
-        texture = asset.get("boss.png")
+        mgr.asset.run {
+            texture = get("boss.png")
+            bossShotSe = get("boss_shot_se.wav")
+            explosionSe = get("explosion_se.wav")
+        }
     }
 
     fun activate(x: Float, y: Float, shootPattern: Int)

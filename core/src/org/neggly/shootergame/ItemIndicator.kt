@@ -1,12 +1,12 @@
 package org.neggly.shootergame
 
-class ItemIndicator(asset: AssetLoader) : GameObject()
+class ItemIndicator(mgr: ObjectMgr) : GameObject(mgr)
 {
     private lateinit var item: Item
 
     init
     {
-        texture = asset.get("item_indicator.png")
+        texture = mgr.asset.get("item_indicator.png")
     }
 
     fun activate(item: Item)

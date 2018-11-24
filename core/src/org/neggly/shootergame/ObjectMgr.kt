@@ -1,7 +1,6 @@
 package org.neggly.shootergame
 
 import com.badlogic.gdx.math.MathUtils
-import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Group
 
 /**
@@ -9,15 +8,15 @@ import com.badlogic.gdx.scenes.scene2d.Group
  *
  * @author negset
  */
-class ObjectMgr(asset: AssetLoader) : Group()
+class ObjectMgr(val asset: AssetLoader) : Group()
 {
-    val player = Player(asset)
-    private val boss = Boss(asset)
-    private val enemies = Array(20) { Enemy(asset) }
-    private val bullets = Array(50) { Bullet(asset) }
-    private val shots = Array(500) { Shot(asset) }
-    private val items = Array(20) { Item(asset) }
-    private val itemIndicators = Array(10) { ItemIndicator(asset) }
+    val player = Player(this)
+    private val boss = Boss(this)
+    private val enemies = Array(20) { Enemy(this) }
+    private val bullets = Array(50) { Bullet(this) }
+    private val shots = Array(500) { Shot(this) }
+    private val items = Array(20) { Item(this) }
+    private val itemIndicators = Array(10) { ItemIndicator(this) }
 
     /** スコア */
     var score = 0
@@ -35,23 +34,7 @@ class ObjectMgr(asset: AssetLoader) : Group()
 
     init
     {
-        addObject(player)
-    }
-
-    @Deprecated(
-            message = "addObjectを使用する.",
-            replaceWith = ReplaceWith("addObject(gameObject)")
-    )
-    override fun addActor(actor: Actor?)
-    {
-        super.addActor(actor)
-    }
-
-    @Suppress("DEPRECATION")
-    private fun addObject(gameObject: GameObject)
-    {
-        gameObject.mgr = this
-        addActor(gameObject)
+        addActor(player)
     }
 
     override fun act(delta: Float)
@@ -74,7 +57,7 @@ class ObjectMgr(asset: AssetLoader) : Group()
             if (waitingBoss && !hasEnemy())
             {
                 boss.activate(WIDTH / 2, HEIGHT + 200, bossCount % 3)
-                addObject(boss)
+                addActor(boss)
                 bossBattle = true
                 waitingBoss = false
                 bossCount++
@@ -197,7 +180,7 @@ class ObjectMgr(asset: AssetLoader) : Group()
     {
         bullets.find { !it.hasParent() }?.run {
             activate(x, y)
-            addObject(this)
+            addActor(this)
         }
     }
 
@@ -209,7 +192,7 @@ class ObjectMgr(asset: AssetLoader) : Group()
     {
         shots.find { !it.hasParent() }?.run {
             activate(x, y, deg, speed)
-            addObject(this)
+            addActor(this)
         }
     }
 
@@ -221,7 +204,7 @@ class ObjectMgr(asset: AssetLoader) : Group()
     {
         enemies.find { !it.hasParent() }?.run {
             activate(x, y)
-            addObject(this)
+            addActor(this)
         }
     }
 
@@ -233,7 +216,7 @@ class ObjectMgr(asset: AssetLoader) : Group()
     {
         items.find { !it.hasParent() }?.run {
             activate(x, y)
-            addObject(this)
+            addActor(this)
         }
     }
 
@@ -245,7 +228,7 @@ class ObjectMgr(asset: AssetLoader) : Group()
     {
         itemIndicators.find { !it.hasParent() }?.run {
             activate(item)
-            addObject(this)
+            addActor(this)
         }
     }
 

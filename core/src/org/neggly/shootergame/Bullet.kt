@@ -1,10 +1,10 @@
 package org.neggly.shootergame
 
-class Bullet(asset: AssetLoader) : GameObject()
+class Bullet(mgr: ObjectMgr) : GameObject(mgr)
 {
     init
     {
-        texture = asset.get("bullet.png")
+        texture = mgr.asset.get("bullet.png")
     }
 
     override fun act(delta: Float)

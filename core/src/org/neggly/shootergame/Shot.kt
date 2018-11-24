@@ -4,11 +4,11 @@ import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 
-class Shot(asset: AssetLoader) : GameObject()
+class Shot(mgr: ObjectMgr) : GameObject(mgr)
 {
     init
     {
-        texture = asset.get("shot.png")
+        texture = mgr.asset.get("shot.png")
     }
 
     fun activate(x: Float, y: Float, deg: Float, speed: Float)

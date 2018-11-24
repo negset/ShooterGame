@@ -5,9 +5,9 @@ import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 
-class Item(asset: AssetLoader) : GameObject()
+class Item(mgr: ObjectMgr) : GameObject(mgr)
 {
-    private val itemCatchSe = asset.get<Sound>("item_catch_se.wav")
+    private val itemCatchSe: Sound
 
     private var pos = Vector2()
 
@@ -17,7 +17,10 @@ class Item(asset: AssetLoader) : GameObject()
 
     init
     {
-        texture = asset.get("item.png")
+        mgr.asset.run {
+            texture = get("item.png")
+            itemCatchSe = get("item_catch_se.wav")
+        }
     }
 
     override fun activate(x: Float, y: Float)
